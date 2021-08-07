@@ -115,7 +115,6 @@ class WebUIServices : ServiciableMultiple {
             service.path = "/edit"
             service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
                 fun doCall(request: Request, response: Response): LinkedHashMap<String, Any> {
-                    // TODO: do something with data
                     val caseModel = gson.fromJson(request.body().trim(), CaseModel::class.java)
                     val ok = AtnDB.saveEditing(caseModel)
                     val map = LinkedHashMap<String, Any>(1)

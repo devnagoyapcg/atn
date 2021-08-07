@@ -25,7 +25,7 @@ data class CaseModel(
             "gender" to gender,
             "dateRecorded" to dateRecorded,
             "case" to case,
-            "remarks" to action,
+            "action" to action,
             "status" to status,
             "others" to others
         )
