@@ -1,0 +1,25 @@
+#admin_header {
+    margin: 0;
+    padding: 0;
+    background-color: $highlight;
+    #user {
+        float: left;
+        font-size: 25px;
+        margin-top: 4px;
+        margin-left: 4px;
+        color: $white;
+    }
+    #logout {
+        float: right;
+        font-size: 25px;
+        margin-top: 4px;
+        margin-right: 4px;
+        border-radius: 10px;
+        background-image: linear-gradient($red, $yellow);
+        &:hover {
+            background-image: linear-gradient($green, $green);
+            color: $white;
+            cursor: pointer;
+        }
+    }
+}

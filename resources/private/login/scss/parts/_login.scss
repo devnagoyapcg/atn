@@ -1,0 +1,74 @@
+#login {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    header {
+        h1 {
+            color: $white;
+        }
+    }
+    article {
+        display: grid;
+        place-items: center;
+        #form_login {
+            box-shadow: 0 0 10px 5px rgba(255, 255, 255, 1.0);
+            border-radius: 10px;
+            padding-left: 16px;
+            padding-right: 16px;
+            padding-top: 16px;
+            padding-bottom: 16px;
+            width: 400px;
+            #username {
+                width: 100%;
+                border-radius: 10px;
+                font-size: 2em;
+            }
+            #password {
+                width: 100%;
+                border-radius: 10px;
+                font-size: 2em;
+            }
+            .dropdown {
+                width: 100%;
+                border-radius: 10px;
+                font-size: 2em;
+                position: relative;
+                display: inline-block;
+                background-color: $white;
+                margin-bottom: 16px;
+            }
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                width: 100%;
+                z-index: 1;
+                background-color: $white;
+                border-radius: 10px;
+            }
+            .dropdown:hover .dropdown-content {
+                display: block;
+            }
+            .dropdown-content p:hover {
+                cursor: pointer;
+                background-color: $highlight;
+            }
+            #submit {
+                margin: auto;
+                width: 100%;
+                border-radius: 10px;
+                font-size: 2em;
+                background-image: linear-gradient($deep_sky_blue, $dodger_blue);
+                &:hover {
+                    background-image: linear-gradient($alice_blue, $aqua);
+                    box-shadow: 0 0 6px 3px $light_blue;
+                }
+            }
+        }
+    }
+    footer {
+        bottom: 0px;
+        span {
+            color: $white;
+        }
+    }
+}

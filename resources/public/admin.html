@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>ATN System</title>
+
+        <meta charset="UTF-8">
+        <meta name="HandheldFriendly"   content="1">
+        <meta name="viewport"           content="width=device-width, maximum-scale=0.87">
+        <meta name="theme-color"        content="#71AC69">
+
+        <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/admin.css" type="text/css" />
+
+        <script src="js/m2d2.bundle.min.js" type="text/javascript"></script>
+        <script src="js/m2d2.storage.min.js" type="text/javascript"></script>
+        <script src="js/admin.min.js" type="text/javascript"></script>
+    </head>
+    <body id="admin">
+        <header id="admin_header">
+            <h3 id="user"></h3>
+            <p><button id="logout" type="submit">Logout
+                <i class="fa fa-sign-out" aria-hidden="true"></i>
+            </button></p>
+        </header>
+        <article id="admin_article">
+            <div id="data">
+                <button id="cases">Cases <i class="fa fa-users" aria-hidden="true"></i></button>
+                <button id="statistics">Statistics <i class="fa fa-bar-chart" aria-hidden="true"></i></button>
+                <button id="settings">Settings <i class="fa fa-cogs" aria-hidden="true"></i></button>
+            </div>
+            <section id="cases_tab" class="tab_content">
+                <ol>
+                    <li id="last_name">Last Name</li>
+                    <li id="first_name">First Name</li>
+                    <li id="middle_name">Middle Name</li>
+                    <li id="birthday">Birthday</li>
+                    <li id="birth_place">Birth Place</li>
+                    <li id="gender">Gender</li>
+                    <li id="date_recorded">Date Recorded</li>
+                    <li id="case">Case</li>
+                    <li id="remarks">Action Taken</li>
+                    <li id="status">Status</li>
+                </ol>
+                <ul id="case_list" class="case_list"></ul>
+            </section>
+            <section id="statistics_tab" class="tab_content">
+            </section>
+            <section id="settings_tab" class="tab_content">
+            </section>
+        </article>
+        <footer id="admin_footer">
+            <input id="search" type="text" placeholder="Search here">
+            <button id="add_new_record" type="submit">Add a new case <i class="fa fa-address-card" aria-hidden="true"></i></button>
+        </footer>
+    </body>
+</html>

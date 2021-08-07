@@ -1,0 +1,9 @@
+app/build/
+build/
+/.gradle
+/node_modules/*
+/resources/public/img/*
+lib/
+deploy/
+log/
+service.lock

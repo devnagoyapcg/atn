@@ -1,0 +1,159 @@
+#admin_article {
+    margin: 0;
+    padding: 0;
+    background-color: $background;
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 100%;
+    grid-template-rows: 6%;
+    grid-template-areas: "tab";
+    #data {
+        grid-area: tab;
+        margin: 0;
+        padding: 0;
+        background-color: $bright;
+        overflow: hidden;
+        border: 1px solid $white;
+        display: flex;
+        button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 4px 4px;
+            transition: 0.3s;
+            font-size: 24px;
+            color: $white;
+            flex-grow: 1;
+            &:hover {
+                background-color: $green;
+            }
+            &.active {
+                background-color: $dark;
+                color: $red;
+            }
+        }
+        .tab_content {
+            display: none;
+            padding: 6px 12px;
+            border: 1px solid $white;
+            border-top: none;
+            overflow: auto;
+        }
+    }
+    #cases_tab {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        border: 1px solid $white;
+        overflow-x: auto;
+        overflow-y: auto;
+        ol {
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-gap: 0;
+            grid-template-columns: 300px 300px 300px 100px 400px 100px 200px 800px 500px 150px;
+            grid-template-areas: "last_name first_name middle_name birthday birth_place gender date_recorded case remarks status";
+            grid-template-row: 40px;
+            li {
+                font-size: 18px;
+                color: $white;
+                list-style: none;
+                white-space: normal;
+                list-style-position: inside;
+                border: 1px solid $white;
+                border-top: 0;
+                vertical-align: middle;
+                text-align: center;
+                background-color: $purple;
+                #last_name {
+                    grid-area: last_name;
+                }
+                #first_name {
+                    grid-area: first_name;
+                }
+                #middle_name {
+                    grid-area: middle_name;
+                }
+                #birthday {
+                    grid-area: birthday;
+                }
+                #birth_place {
+                    grid-area : birth_place;
+                }
+                #gender {
+                    grid-area: gender;
+                }
+                #date_recorded {
+                    grid-area: date_recorded;
+                }
+                #case {
+                    grid-area: case;
+                }
+                #remarks {
+                    grid-area: remarks;
+                }
+                #status {
+                    grid-area: status;
+                }
+            }
+        }
+        ul {
+            margin: 0;
+            padding: 0;
+            li {
+                display: grid;
+                grid-gap: 0;
+                grid-template-columns: 300px 300px 300px 100px 400px 100px 200px 800px 500px 150px;
+                grid-template-areas: "last_name first_name middle_name birthday birth_place gender date_recorded case remarks status";
+                grid-template-row: auto;
+                &:hover {
+                    background-color: #8fbc8f;
+                }
+                span {
+                    font-size: 18px;
+                    color: $white;
+                    list-style: none;
+                    white-space: normal;
+                    list-style-position: inside;
+                    border: 1px solid $white;
+                    border-top: 0;
+                    vertical-align: middle;
+                    text-align: center;
+                    #lastname {
+                        grid-area: last_name;
+                    }
+                    #firstname {
+                        grid-area: first_name;
+                    }
+                    #middlename {
+                        grid-area: middle_name;
+                    }
+                    #birthday {
+                        grid-area: birthday;
+                    }
+                    #birthplace {
+                        grid-area: birth_place;
+                    }
+                    #gender {
+                        grid-area: gender;
+                    }
+                    #daterecorded {
+                        grid-area: date_recorded;
+                    }
+                    #casetype {
+                        grid-area: case;
+                    }
+                    #remarks {
+                        grid-area: remarks;
+                    }
+                    #status {
+                        grid-area: status;
+                    }
+                }
+            }
+        }
+    }
+}

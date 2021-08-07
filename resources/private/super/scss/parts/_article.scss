@@ -1,0 +1,10 @@
+#super_article {
+    margin: 0;
+    padding: 0;
+    background-color: $background;
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 100%;
+    grid-template-rows: 6%;
+    grid-template-areas: "tab";
+}

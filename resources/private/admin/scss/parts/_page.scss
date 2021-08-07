@@ -1,0 +1,22 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: $background;
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 100%;
+    grid-template-rows: 50px calc(100vh - 100px) 50px;
+    grid-template-areas: "header"
+                         "article"
+                         "footer";
+    #admin_header {
+        grid-area: header;
+    }
+    #admin_article {
+        grid-area: article;
+        overflow-y: auto;
+    }
+    #admin_footer {
+        grid-area: footer;
+    }
+}

@@ -1,0 +1,18 @@
+#super_header {
+    margin: 0;
+    padding: 0;
+    background-color: $highlight;
+    #logout {
+        float: right;
+        font-size: 25px;
+        margin-top: 4px;
+        margin-right: 4px;
+        border-radius: 10px;
+        background-image: linear-gradient($red, $yellow);
+        &:hover {
+            background-image: linear-gradient($green, $green);
+            color: $white;
+            cursor: pointer;
+        }
+    }
+}

@@ -1,0 +1,20 @@
+#admin_footer {
+    margin: 0;
+    padding: 0;
+    background-color: $highlight;
+    display: flex;
+    #search {
+        flex-grow: 1;
+        font-size: 24px;
+        padding-left: 4px;
+    }
+    #add_new_record {
+        flex-grow: 1;
+        font-size: 24px;
+        &:hover {
+            background-color: $green;
+            color: $white;
+            cursor: crosshair;
+        }
+    }
+}

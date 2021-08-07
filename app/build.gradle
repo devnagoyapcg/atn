@@ -1,0 +1,45 @@
+plugins {
+    id 'application'
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.5.21'
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+}
+repositories {
+    //mavenLocal()
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    maven { url 'https://jitpack.io' }
+}
+dependencies {
+    def commonVer = "2.8.0-SNAPSHOT" //"2.7.17"
+    def groovyVer = "3.0.7"
+    def gsonVer = "2.8.7"
+
+    implementation "org.codehaus.groovy:groovy-all:${groovyVer}"
+    implementation "com.intellisrc:core:${commonVer}"
+    implementation "com.intellisrc:db:${commonVer}"
+    implementation "com.intellisrc:web:${commonVer}"
+    implementation "com.intellisrc:thread:${commonVer}"
+    implementation "com.intellisrc:crypt:${commonVer}"
+    implementation "com.google.code.gson:gson:${gsonVer}"
+    // UNIT TESTS
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.7.0"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.7.0"
+}
+application {
+    group groupName
+    version 1.0
+    mainClass.set('dfa.gov.nagoyapcg.atn.App')
+}
+shadowJar {
+    archiveBaseName.set(project.name)
+    archiveVersion.set("${project.version}")
+    zip64 = true
+}
+task compile {
+    dependsOn(shadowJar)
+}
+test {
+    useJUnitPlatform()
+}
