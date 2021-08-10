@@ -123,6 +123,8 @@ m2d2.ready($ => {
                     text : ""
                 },
                 onclick : function(ev) {
+                    $.session.set("id", this.dataset.id);
+                    console.log(this.dataset.id);
                     $.message({
                            icon : "input",     // OPTIONAL: you can use : "question", "info", "error", "ok", "input", "wait"
                            css  : "special",   // Set class or classes
@@ -252,8 +254,89 @@ m2d2.ready($ => {
                                     }
                                 },
                            },
-                           buttons : ["cancel", "upload", "print", "save"], // Specify button text and classes which in this case be: "no_way" and "roger"
-                           callback : function() {}
+                           buttons : ["cancel", "upload", "delete", "print", "save"], // Specify button text and classes which in this case be: "no_way" and "roger"
+                           callback : function(ev) {
+                               switch (ev.button) {
+                                   case "save":
+                                        var data = {
+                                            id           : $.session.get("id"),
+                                            lastName     : ev.field_1,
+                                            firstName    : ev.field_2,
+                                            middleName   : ev.field_3,
+                                            birthday     : ev.field_4,
+                                            birthPlace   : ev.field_5,
+                                            gender       : ev.field_6,
+                                            dateRecorded : ev.field_7,
+                                            case         : ev.field_8,
+                                            action       : ev.field_9,
+                                            status       : ev.field_10,
+                                            others       : ev.field_11
+                                       }
+                                       $.post(urlAtn + "edit", data, (res) => {
+                                           if (res.ok) {
+                                               $.alert("Successfully saved!");
+                                               if (res.data.length > 0) {
+                                                   case_list.items.clear();
+                                                   res.data.forEach( item => {
+                                                       case_list.items.push({
+                                                           dataset      : { id : item.id },
+                                                           lastname     : { text : item.lastName },
+                                                           firstname    : { text : item.firstName },
+                                                           middlename   : { text : item.middleName },
+                                                           birthday     : { text : item.birthday },
+                                                           birthplace   : { text : item.birthPlace },
+                                                           gender       : { text : item.gender },
+                                                           daterecorded : { text : item.dateRecorded },
+                                                           casetype     : { text : item.case },
+                                                           action       : { text : item.action },
+                                                           status       : { text : item.status },
+                                                           others       : { text : item.others }
+                                                       });
+                                                   })
+                                                   $.session.set("id", "");
+                                               } else {
+                                                   console.log("data is empty");
+                                               }
+                                           }
+                                       }, true);
+                                       break;
+                                   case "print":
+                                       break;
+                                   case "upload":
+                                       break;
+                                   case "delete":
+                                       $.delete(urlAtn + "delete/" + $.session.get("id"), (res) => {
+                                           if (res.ok) {
+                                               $.alert("Case successfully deleted");
+                                               if (res.data.length > 0) {
+                                                   case_list.items.clear();
+                                                   res.data.forEach( item => {
+                                                       case_list.items.push({
+                                                           dataset      : { id : item.id },
+                                                           lastname     : { text : item.lastName },
+                                                           firstname    : { text : item.firstName },
+                                                           middlename   : { text : item.middleName },
+                                                           birthday     : { text : item.birthday },
+                                                           birthplace   : { text : item.birthPlace },
+                                                           gender       : { text : item.gender },
+                                                           daterecorded : { text : item.dateRecorded },
+                                                           casetype     : { text : item.case },
+                                                           action       : { text : item.action },
+                                                           status       : { text : item.status },
+                                                           others       : { text : item.others }
+                                                       });
+                                                   })
+                                                   $.session.set("id", "");
+                                               }
+                                           }
+                                       });
+                                       break;
+                                   case "cancel":
+                                       break;
+                                   default:
+                                       break;
+                               }
+                           }
                     });
                 }
             }
@@ -261,14 +344,13 @@ m2d2.ready($ => {
         onload : function() {
             $.get("/atn/load", (res) => {
                 if (res.data.length > 0) {
-                    console.log(res.data);
+                    this.items.clear();
                     res.data.forEach( item => {
-                        this.items.clear();
                         this.items.push({
                             dataset      : { id : item.id },
                             lastname     : { text : item.lastName },
                             firstname    : { text : item.firstName },
-                            middlename   : { text : item.lastName },
+                            middlename   : { text : item.middleName },
                             birthday     : { text : item.birthday },
                             birthplace   : { text : item.birthPlace },
                             gender       : { text : item.gender },

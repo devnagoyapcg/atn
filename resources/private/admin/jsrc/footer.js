@@ -1,27 +1,4 @@
 m2d2.ready($ => {
-    $.dict.set({
-        yes : {
-            en : "YES"
-        },
-        no : {
-            en : "NO"
-        },
-        ok : {
-            en : "OK"
-        },
-        cancel : {
-            en : "CANCEL"
-        },
-        upload : {
-            en : "UPLOAD"
-        },
-        print : {
-            en : "PRINT"
-        },
-        save : {
-            en : "SAVE"
-        }
-    });
     $(add_new_record, {
         onclick : function(ev) {
             $.message({
@@ -160,9 +137,30 @@ m2d2.ready($ => {
                                 status       : ev.field_10,
                                 others       : ev.field_11
                             }
-                            $.post("/atn/add", data, (res) => {
+                            $.post(urlAtn + "add", data, (res) => {
                                 if (res.ok) {
                                     $.alert("New record is saved!");
+                                    if (res.data.length > 0) {
+                                        case_list.items.clear();
+                                        res.data.forEach( item => {
+                                            case_list.items.push({
+                                                dataset      : { id : item.id },
+                                                lastname     : { text : item.lastName },
+                                                firstname    : { text : item.firstName },
+                                                middlename   : { text : item.lastName },
+                                                birthday     : { text : item.birthday },
+                                                birthplace   : { text : item.birthPlace },
+                                                gender       : { text : item.gender },
+                                                daterecorded : { text : item.dateRecorded },
+                                                casetype     : { text : item.case },
+                                                action       : { text : item.action },
+                                                status       : { text : item.status },
+                                                others       : { text : item.others }
+                                            });
+                                        })
+                                    }
+                                } else {
+                                    $.failure("Error getting data!");
                                 }
                             }, true);
                             break;

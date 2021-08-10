@@ -47,6 +47,7 @@ class AtnDB {
             return fromData(rows!!)
         }
         fun saveNewCase(data: CaseModel): Boolean {
+            Log.i("Saving new record")
             var ok = false
             val db: DB = Database.getDefault().connect()
             if (db.table(table).exists()) {
@@ -57,10 +58,22 @@ class AtnDB {
             return ok
         }
         fun saveEditing(data: CaseModel): Boolean {
+            Log.i("Saving the edited record")
             var ok = false
             val db: DB = Database.getDefault().connect()
             if (db.table(table).exists()) {
                 ok = db.table(table).key("id").update(data.toMap(), data.id)
+            } else
+                Log.w("Table $table doesn't exist!")
+            db.close()
+            return ok
+        }
+        fun deleteCase(id: Int): Boolean {
+            Log.i("Deleting the record")
+            var ok = false
+            val db: DB = Database.getDefault().connect()
+            if (db.table(table).exists()) {
+                ok = db.table(table).key("id").delete(id)
             } else
                 Log.w("Table $table doesn't exist!")
             db.close()
@@ -119,6 +132,13 @@ class AtnDB {
                 }
             }
             return cleanMap
+        }
+        fun getLastID(): Int {
+            val db: DB = Database.getDefault().connect()
+            return if (db.table(table).exists())
+                db.table(table).lastID
+            else
+                0
         }
         fun initDB() {
             val dbFile = SysInfo.getFile(Config.get("db.name", "main") + ".db")

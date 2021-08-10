@@ -30,6 +30,7 @@ class WebUIServices : ServiciableMultiple {
         services.add(getAll())
         services.add(onSaveNewCase())
         services.add(onSaveEditing())
+        services.add(deleteCase())
         return services
     }
 
@@ -99,10 +100,12 @@ class WebUIServices : ServiciableMultiple {
                     val json = JSON.decode(request.body()).toMap()
                     if (request.body().trim().isNotEmpty()) {
                         val caseModel = gson.fromJson(request.body().trim(), CaseModel::class.java)
+                        caseModel.id = AtnDB.getLastID() + 1
                         ok = AtnDB.saveNewCase(caseModel)
                     }
                     val map = LinkedHashMap<String, Any>(1)
                     map["ok"] = ok
+                    map["data"] = AtnDB.getAll()
                     return map
                 }
             }
@@ -119,6 +122,24 @@ class WebUIServices : ServiciableMultiple {
                     val ok = AtnDB.saveEditing(caseModel)
                     val map = LinkedHashMap<String, Any>(1)
                     map["ok"] = ok
+                    map["data"] = AtnDB.getAll()
+                    return map
+                }
+            }
+            return service
+        }
+        fun deleteCase(): Service {
+            val service = Service()
+            service.method = Service.Method.DELETE
+            service.allow = AuthService.Admin()
+            service.path = "/delete/:id"
+            service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
+                fun doCall(request: Request): LinkedHashMap<String, Any> {
+                    val id = Integer.parseInt(request.params("id"))
+                    val ok = AtnDB.deleteCase(id)
+                    val map = LinkedHashMap<String, Any>(1)
+                    map["ok"] = ok
+                    map["data"] = AtnDB.getAll()
                     return map
                 }
             }

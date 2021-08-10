@@ -16,6 +16,18 @@ m2d2.ready($ => {
         cancel : {
             en : "CANCEL"
         },
+        upload : {
+            en : "UPLOAD"
+        },
+        delete : {
+            en : "DELETE"
+        },
+        print : {
+            en : "PRINT"
+        },
+        save : {
+            en : "SAVE"
+        }
     });
     $(user, {});
     $(admin, {
