@@ -8,10 +8,10 @@ m2d2.ready($ => {
                     var firstName = li.firstname.text.toUpperCase();
                     var middleName = li.middlename.text.toUpperCase();
                     var birthday = li.birthday.text;
-                    var birthPlace = li.birthplace.text;
-                    var gender = li.gender.text;
+                    var birthPlace = li.birthplace.text.toUpperCase();
+                    var gender = li.gender.text.toUpperCase();
                     var dateRecorded = li.daterecorded.text;
-                    var status = li.status.text;
+                    var status = li.status.text.toUpperCase();
                     var filter = ev.target.value.toUpperCase();
                     if (lastName.indexOf(filter) > -1 ||
                         firstName.indexOf(filter) > -1 ||
@@ -158,7 +158,7 @@ m2d2.ready($ => {
                         }
                    },
                 },
-                buttons : ["cancel", "upload", "print", "save"], // Specify button text and classes which in this case be: "no_way" and "roger"
+                buttons : ["cancel", "upload", "save"], // Specify button text and classes which in this case be: "no_way" and "roger"
                 callback : function(ev) {
                     switch (ev.button) {
                         case "save":
@@ -202,8 +202,6 @@ m2d2.ready($ => {
                                     $.failure("Error getting data!");
                                 }
                             }, true);
-                            break;
-                        case "print":
                             break;
                         case "upload":
                             break;

@@ -256,22 +256,22 @@ m2d2.ready($ => {
                            },
                            buttons : ["cancel", "upload", "delete", "print", "save"], // Specify button text and classes which in this case be: "no_way" and "roger"
                            callback : function(ev) {
+                                var data = {
+                                    id           : $.session.get("id"),
+                                    lastName     : ev.field_1,
+                                    firstName    : ev.field_2,
+                                    middleName   : ev.field_3,
+                                    birthday     : ev.field_4,
+                                    birthPlace   : ev.field_5,
+                                    gender       : ev.field_6,
+                                    dateRecorded : ev.field_7,
+                                    case         : ev.field_8,
+                                    action       : ev.field_9,
+                                    status       : ev.field_10,
+                                    others       : ev.field_11
+                               }
                                switch (ev.button) {
                                    case "save":
-                                        var data = {
-                                            id           : $.session.get("id"),
-                                            lastName     : ev.field_1,
-                                            firstName    : ev.field_2,
-                                            middleName   : ev.field_3,
-                                            birthday     : ev.field_4,
-                                            birthPlace   : ev.field_5,
-                                            gender       : ev.field_6,
-                                            dateRecorded : ev.field_7,
-                                            case         : ev.field_8,
-                                            action       : ev.field_9,
-                                            status       : ev.field_10,
-                                            others       : ev.field_11
-                                       }
                                        $.post(urlAtn + "edit", data, (res) => {
                                            if (res.ok) {
                                                $.alert("Successfully saved!");
@@ -301,6 +301,7 @@ m2d2.ready($ => {
                                        }, true);
                                        break;
                                    case "print":
+                                       case_list.onPrint(data);
                                        break;
                                    case "upload":
                                        break;
@@ -340,6 +341,28 @@ m2d2.ready($ => {
                     });
                 }
             }
+        },
+        onPrint : function(data) {
+            var dd = {
+                content: [
+                    {
+                        text: 'This is just a sample pdf.'
+                    },
+                    {
+                        image: 'img/npcg.png',
+                        width: '800',
+                        height: '200',
+                        absolutePosition: { x: 100, y: 100 }
+                    },
+                ]
+            };
+            var now = new Date();
+            var pdf = createPdf(dd);
+            pdf.write('pdfs/case.pdf').then(() => {
+            	console.log(new Date() - now);
+            }, err => {
+            	console.error(err);
+            });
         },
         onload : function() {
             $.get("/atn/load", (res) => {

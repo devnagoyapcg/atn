@@ -1,6 +1,7 @@
 var url = "/auth/";
 var urlAtn = "/atn/";
 const _ = (k) => k;
+//var pdfmake = require('pdfmake');
 
 m2d2.ready($ => {
     $.dict.set({
