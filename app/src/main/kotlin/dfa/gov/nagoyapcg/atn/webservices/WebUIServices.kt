@@ -97,10 +97,10 @@ class WebUIServices : ServiciableMultiple {
             service.path = "/add"
             service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
                 fun doCall(request: Request, response: Response): LinkedHashMap<String, Any> {
-                    val json = JSON.decode(request.body()).toMap()
                     if (request.body().trim().isNotEmpty()) {
                         val caseModel = gson.fromJson(request.body().trim(), CaseModel::class.java)
                         caseModel.id = AtnDB.getLastID() + 1
+                        Log.i("The last ID is ${AtnDB.getLastID()}")
                         ok = AtnDB.saveNewCase(caseModel)
                     }
                     val map = LinkedHashMap<String, Any>(1)

@@ -51,7 +51,20 @@ class AtnDB {
             var ok = false
             val db: DB = Database.getDefault().connect()
             if (db.table(table).exists()) {
-                ok = db.table(table).insert(data.toMap())
+                //ok = db.table(table).insert(data.toMap())
+                ok = db.table(table).insert(mapOf(
+                    "lastName"     to data.lastName,
+                    "firstName"    to data.firstName,
+                    "middleName"   to data.middleName,
+                    "birthday"     to data.birthday,
+                    "birthPlace"   to data.birthPlace,
+                    "gender"       to data.gender,
+                    "dateRecorded" to data.dateRecorded,
+                    "case"         to data.case,
+                    "action"       to data.action,
+                    "status"       to data.status,
+                    "others"       to data.others
+                ))
             } else
                 Log.w("Table $table doesn't exist!")
             db.close()
@@ -135,10 +148,12 @@ class AtnDB {
         }
         fun getLastID(): Int {
             val db: DB = Database.getDefault().connect()
-            return if (db.table(table).exists())
+            val lastID: Int = if (db.table(table).exists())
                 db.table(table).lastID
             else
                 0
+            db.close()
+            return lastID
         }
         fun initDB() {
             val dbFile = SysInfo.getFile(Config.get("db.name", "main") + ".db")
