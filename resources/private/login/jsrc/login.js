@@ -89,6 +89,7 @@ m2d2.ready($ => {
         text : "Post"
     });
     $(dropdown_content, {
+        show : false,
         template : {
             p : {
                 text : "",
@@ -98,6 +99,7 @@ m2d2.ready($ => {
             }
         },
         onload : function(ev) {
+            this.show = false;
             this.items.clear();
             for (var i = 0; i < 3; i++) {
                 this.items.push({

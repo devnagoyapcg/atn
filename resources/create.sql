@@ -10,12 +10,17 @@ CREATE TABLE `cases` (
 `case` TEXT,
 `action` TEXT,
 `status` VARCHAR(15),
+`priority` VARCHAR(10),
+`officer` VARCHAR(100),
 `others` TEXT);
-CREATE INDEX byfirst ON cases(`first_name`);
-CREATE INDEX bylast ON cases(`last_name`);
+CREATE INDEX byfirst ON cases(`lastName`);
+CREATE INDEX bylast ON cases(`firstName`);
 
 CREATE TABLE `auth` (
-`user` VARCHAR(20) PRIMARY KEY NOT NULL,
-`pass` VARCHAR(60)
+`id` INTEGER PRIMARY KEY AUTOINCREMENT,
+`user` VARCHAR(20) NOT NULL,
+`pass` VARCHAR(60) NOT NULL,
+`lastName` VARCHAR(100) NOT NULL,
+`firstName` VARCHAR(100) NOT NULL
 );
-INSERT INTO `auth` (`user`,`pass`) VALUES ("admin", "UCDMOzHjLRTMaCbBSkvfLOzF/5CWhDivPGUWYGucl57tXlgCH/atu");
+INSERT INTO `auth` (`user`,`pass`,`lastName`,`firstName`) VALUES ("admin", "UCDMOzHjLRTMaCbBSkvfLOzF/5CWhDivPGUWYGucl57tXlgCH/atu", "Admin", "Admin");

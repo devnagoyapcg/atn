@@ -16,7 +16,7 @@ import kotlin.collections.HashMap
 
 class AtnDB {
     companion object {
-        private val table = "cases"
+        private const val table = "cases"
         private fun replaceTableName(file: File): File {
             val post = Config.get("post")
             val reader = BufferedReader(FileReader(file))
@@ -63,6 +63,8 @@ class AtnDB {
                     "case"         to data.case,
                     "action"       to data.action,
                     "status"       to data.status,
+                    "priority"     to data.priority,
+                    "officer"      to data.officer,
                     "others"       to data.others
                 ))
             } else
@@ -118,6 +120,8 @@ class AtnDB {
                 cleanData["case"].toString(),
                 cleanData["action"].toString(),
                 cleanData["status"].toString(),
+                cleanData["priority"].toString(),
+                cleanData["officer"].toString(),
                 cleanData["others"].toString()
             )
         }
@@ -137,6 +141,8 @@ class AtnDB {
                     "case",
                     "action",
                     "status",
+                    "priority",
+                    "officer",
                     "others" -> cleanMap[inKey] = input[inKey]
                     else -> {
                         Log.w("Un-identified key $inKey")

@@ -17,6 +17,7 @@
     "express": "^4.17.1",
     "express-cdn": "^0.4.0",
     "expressjs": "^1.0.1",
+    "pdfmake": "^0.2.2",
     "gulp-nw-builder": "1.4.0",
     "nw": "0.54.0"
   },
@@ -26,7 +27,7 @@
     "gulp-concat": "^2.6.1",
     "gulp-cssmin": "^0.2.0",
     "gulp-rename": "^2.0.0",
-    "gulp-sass": "^4.1.0",
+    "gulp-sass": "^5.0.0",
     "gulp-sass-glob": "^1.1.0",
     "gulp-terser": "^1.4.1",
     "gulpfile.js": "^3.2.5"

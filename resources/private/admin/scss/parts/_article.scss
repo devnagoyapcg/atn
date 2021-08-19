@@ -23,7 +23,7 @@
             cursor: pointer;
             padding: 4px 4px;
             transition: 0.3s;
-            font-size: 24px;
+            font-size: 1.5em;
             color: $white;
             flex-grow: 1;
             &:hover {
@@ -49,13 +49,89 @@
         border: 1px solid $white;
         overflow-x: auto;
         overflow-y: auto;
-        ol {
+        .scene {
+            width: 100%;
+            height: 100%;
+            perspective: 100%;
+        }
+        .box {
+            width: inherit;
+            height: inherit;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: translateZ(-50px);
+            transition: transform 1s;
+        }
+        .box__face--bottom {
+            max-width: 100%;
+            overflow-x: hidden;
+            display: grid;
+            grid-gap: 0;
+            grid-template-columns: 100%;
+            grid-template-rows: 50px auto;
+            grid-template-areas: "title_container"
+                                 "fields_container";
+            #title_container {
+                grid-area: title_container;
+                position: fixed;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                display: block;
+                text-align: center;
+                h3 {
+                    display: inline;
+                    text-align: center;
+                    color: $white;
+                    font-size: 2em;
+                }
+                #floating_close_button {
+                    width: 40px;
+                    height: 40px;
+                    margin-right: 4px;
+                    margin-top: 4px;
+                    border-radius: 100%;
+                    background-color: #F44336;
+                    border: none;
+                    outline: none;
+                    color: $white;
+                    font-size: 2em;
+                    float: right;
+                    .fa-times {
+                        color: white;
+                        vertical-align: text-top;
+                    }
+                }
+            }
+            #fields_container {
+                grid-area: fields_container;
+                overflow-y: auto;
+            }
+        }
+        .box.show-front  { transform: translateZ( -50px) rotateY(   0deg); }
+        .box.show-bottom { transform: translateZ(-100px) rotateX(  90deg); }
+        .box__face {
+            position: absolute;
+        }
+        .box__face--front {
+            width: inherit;
+            height: inherit;
+        }
+        .box__face--bottom {
+            width: inherit;
+            height: inherit;
+        }
+        .box__face--front  { background-color: $background; }
+        .box__face--bottom { background-color: $background; }
+        .box__face--front  { transform: rotateY(  0deg) translateZ( 50px); }
+        .box__face--bottom { transform: rotateX(-90deg) translateZ(100px); }
+        #case_header_list {
             margin: 0;
             padding: 0;
             display: grid;
             grid-gap: 0;
-            grid-template-columns: 300px 300px 300px 100px 400px 100px 200px 800px 500px 150px;
-            grid-template-areas: "last_name first_name middle_name birthday birth_place gender date_recorded case remarks status";
+            grid-template-columns: 300px 300px 300px 100px 400px 100px 200px 800px 500px 150px 80px 150px;
+            grid-template-areas: "last_name first_name middle_name birthday birth_place gender date_recorded case remarks status priority officer";
             grid-template-row: 40px;
             li {
                 font-size: 18px;
@@ -98,6 +174,12 @@
                 #status {
                     grid-area: status;
                 }
+                #priority {
+                    grid-area: priority
+                }
+                #officer {
+                    grid-area: priority
+                }
             }
         }
         ul {
@@ -106,8 +188,8 @@
             li {
                 display: grid;
                 grid-gap: 0;
-                grid-template-columns: 300px 300px 300px 100px 400px 100px 200px 800px 500px 150px;
-                grid-template-areas: "last_name first_name middle_name birthday birth_place gender date_recorded case remarks status";
+                grid-template-columns: 300px 300px 300px 100px 400px 100px 200px 800px 500px 150px 80px 150px;
+                grid-template-areas: "last_name first_name middle_name birthday birth_place gender date_recorded case remarks status priority officer";
                 grid-template-row: auto;
                 &:hover {
                     background-color: #8fbc8f;
@@ -122,35 +204,239 @@
                     border-top: 0;
                     vertical-align: middle;
                     text-align: center;
-                    #lastname {
+                    .lastname {
                         grid-area: last_name;
                     }
-                    #firstname {
+                    .firstname {
                         grid-area: first_name;
                     }
-                    #middlename {
+                    .middlename {
                         grid-area: middle_name;
                     }
-                    #birthday {
+                    .birthday {
                         grid-area: birthday;
                     }
-                    #birthplace {
+                    .birthplace {
                         grid-area: birth_place;
                     }
-                    #gender {
+                    .gender {
                         grid-area: gender;
                     }
-                    #daterecorded {
+                    .daterecorded {
                         grid-area: date_recorded;
                     }
-                    #casetype {
+                    .casetype {
                         grid-area: case;
                     }
-                    #remarks {
+                    .remarks {
                         grid-area: remarks;
                     }
-                    #status {
+                    .status {
                         grid-area: status;
+                    }
+                    .priority {
+                        grid-area: priority
+                    }
+                    .officer {
+                        grid-area: priority
+                    }
+                }
+            }
+        }
+        #add_fields {
+            display: flex;
+            justify-content: normal;
+            flex-wrap: wrap;
+            overflow-y: auto;
+            li {
+                list-style: none;
+                vertical-align: middle;
+                display: block;
+                width: 100%;
+                span {
+                    width: 24%;
+                    border: none;
+                    font-size: 2em;
+                    display: inline-block;
+                    vertical-align: middle;
+                    text-align: left;
+                    margin-left: 8px;
+                }
+                input, textarea, select {
+                    font-size: 2em;
+                    width: 65%;
+                    vertical-align: middle;
+                    margin: 4px;
+                }
+            }
+        }
+        #buttons_container {
+            display: flex;
+            button {
+                font-size: 2em;
+                border-radius: 10px;
+                flex-grow: 1;
+                &:hover {
+                    background-image: linear-gradient($green, $green);
+                    cursor: pointer;
+                }
+            }
+            #button_cancel {
+                background-image: linear-gradient($red, $yellow);
+            }
+            #button_upload {
+                background-image: linear-gradient($blue, $search_border);
+            }
+            #button_delete {
+                background-image: linear-gradient($blue, $search_border);
+            }
+            #button_edit {
+                background-image: linear-gradient($blue, $search_border);
+            }
+            #button_print {
+                background-image: linear-gradient($blue, $search_border);
+            }
+            #button_save {
+                background-image: linear-gradient($blue, $search_border);
+            }
+        }
+    }
+    #settings_tab {
+        margin: 0;
+        padding: 0;
+        overflow-x: auto;
+        overflow-y: auto;
+        border: 1px solid $white;
+        #user_settings {
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-gap: 0;
+            height: 100%;
+            grid-template-columns: 40% 60%;
+            grid-template-row: auto;
+            grid-template-areas: "user_field user_list";
+            #user_field {
+                grid-area: user_field;
+                display: grid;
+                place-items: center;
+                vertical-align: middle;
+                border-right: 0.5px solid $white;
+                padding-right: 16px;
+                padding-left: 16px;
+                #user_lastname {
+                    width: 100%;
+                    font-size: 2em;
+                }
+                #user_firstname {
+                    width: 100%;
+                    font-size: 2em;
+                }
+                #username {
+                    width: 100%;
+                    font-size: 2em;
+                }
+                #user_password {
+                    width: 100%;
+                    font-size: 2em;
+                }
+                #user_confirm_password {
+                    width: 100%;
+                    font-size: 2em;
+                }
+                #user_buttons_container {
+                    width: 100%;
+                    margin: 0;
+                    padding: 0;
+                    display: flex;
+                    #button_user_submit, #button_edit_password {
+                        flex-grow: 1;
+                        margin: 0;
+                        padding: 0;
+                        width: 100%;
+                        font-size: 2em;
+                        background-image: linear-gradient($deep_sky_blue, $dodger_blue);
+                        &:hover {
+                            background-image: linear-gradient($green, $green);
+                            box-shadow: 0 0 6px 3px $light_blue;
+                        }
+                    }
+                }
+                label {
+                    float: left;
+                    color: $white;
+                    font-size: 1.5em;
+                }
+            }
+            #user_list {
+                grid-area: user_list;
+                border-left: 0.5px solid $white;
+                height: 100%;
+            }
+        }
+        #user_header_list {
+            margin: 0;
+            padding: 0;
+            display : grid;
+            grid-gap: 0;
+            grid-template-columns: 300px 300px auto;
+            grid-template-areas: "user_last_name user_first_name user_username";
+            grid-template-row: auto;
+            li {
+                font-size: 18px;
+                color: $white;
+                list-style: none;
+                white-space: normal;
+                list-style-position: inside;
+                border: 1px solid $white;
+                border-top: 0;
+                vertical-align: middle;
+                text-align: center;
+                background-color: $purple;
+                #user_last_name {
+                    grid-area: user_last_name;
+                }
+                #user_first_name {
+                    grid-area: user_first_name;
+                }
+                #user_username {
+                    grid-area: user_username;
+                }
+            }
+        }
+        #list_of_users {
+            margin: 0;
+            padding: 0;
+            li {
+                display: grid;
+                grid-gap: 0;
+                grid-template-columns: 300px 300px auto;
+                grid-template-areas: "user_last_name user_first_name user_username";
+                &:hover {
+                    background-color: #8fbc8f;
+                    cursor: default;
+                }
+                span {
+                    font-size: 18px;
+                    color: $white;
+                    list-style: none;
+                    white-space: normal;
+                    list-style-position: inside;
+                    border: 1px solid $white;
+                    border-top: 0;
+                    vertical-align: middle;
+                    text-align: center;
+                    .userLastName {
+                        grid-area: user_last_name;
+                    }
+                    .userFirstName {
+                        grid-area: user_first_name;
+                    }
+                    .userUsername {
+                        grid-area: user_username;
+                    }
+                    &:hover {
+                        cursor: default;
                     }
                 }
             }

@@ -4,7 +4,7 @@ const gulp   = require('gulp'),
     cssmin   = require('gulp-cssmin'),
     sassGlob = require('gulp-sass-glob'),
     rename   = require('gulp-rename'),
-    sass     = require('gulp-sass');
+    sass     = require('gulp-sass')(require('sass'));
     merge    = require('merge-stream');
 
 const pathsLogin = {

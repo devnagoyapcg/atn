@@ -12,22 +12,26 @@ data class CaseModel(
     var case: String = "",
     var action: String = "",
     var status: String = "",
+    var priority: String = "",
+    var officer: String = "",
     var others: String = ""
 ) {
     fun toMap(): Map<String, Any> {
         return mapOf(
-            "id" to id,
-            "lastName" to lastName,
-            "firstName" to firstName,
-            "middleName" to middleName,
-            "birthday" to birthday,
-            "birthPlace" to birthPlace,
-            "gender" to gender,
-            "dateRecorded" to dateRecorded,
-            "case" to case,
-            "action" to action,
-            "status" to status,
-            "others" to others
+            "id"            to id,
+            "lastName"      to lastName,
+            "firstName"     to firstName,
+            "middleName"    to middleName,
+            "birthday"      to birthday,
+            "birthPlace"    to birthPlace,
+            "gender"        to gender,
+            "dateRecorded"  to dateRecorded,
+            "case"          to case,
+            "action"        to action,
+            "status"        to status,
+            "priority"      to priority,
+            "officer"       to officer,
+            "others"        to others
         )
     }
 }

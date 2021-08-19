@@ -2,15 +2,17 @@ package dfa.gov.nagoyapcg.atn.webservices
 
 import com.google.gson.Gson
 import com.intellisrc.core.Log
-import com.intellisrc.web.JSON
 import com.intellisrc.web.Service
 import com.intellisrc.web.ServiciableMultiple
 import dfa.gov.nagoyapcg.atn.db.AtnDB
+import dfa.gov.nagoyapcg.atn.db.UsersDB
 import dfa.gov.nagoyapcg.atn.db.models.CaseModel
+import dfa.gov.nagoyapcg.atn.db.models.UserModel
 import groovy.lang.Closure
 import spark.Request
 import spark.Response
 import java.io.File
+import java.nio.file.Files
 import java.util.LinkedHashMap
 
 class WebUIServices : ServiciableMultiple {
@@ -31,6 +33,10 @@ class WebUIServices : ServiciableMultiple {
         services.add(onSaveNewCase())
         services.add(onSaveEditing())
         services.add(deleteCase())
+        services.add(getNpcgLogo())
+        services.add(getUsers())
+        services.add(updateUser())
+        services.add(getUpload())
         return services
     }
 
@@ -140,6 +146,61 @@ class WebUIServices : ServiciableMultiple {
                     val map = LinkedHashMap<String, Any>(1)
                     map["ok"] = ok
                     map["data"] = AtnDB.getAll()
+                    return map
+                }
+            }
+            return service
+        }
+        fun getNpcgLogo(): Service {
+            val service = Service()
+            service.path = "/npcg"
+            service.contentType = "image/jpeg"
+            service.action = Service.Action {
+                File("resources/public/img/", "npcg.jpg")
+            }
+            return service
+        }
+        fun getUsers(): Service {
+            val service = Service()
+            service.method = Service.Method.GET
+            service.allow = AuthService.Admin()
+            service.path = "/users"
+            service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
+                fun doCall(request: Request): LinkedHashMap<String, Any> {
+                    val map = LinkedHashMap<String, Any>(1)
+                    map["data"] = UsersDB.getAll()
+                    return map
+                }
+            }
+            return service
+        }
+        fun updateUser(): Service {
+            val service = Service()
+            service.method = Service.Method.POST
+            service.allow = AuthService.Admin()
+            service.path = "/update"
+            service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
+                fun doCall(request: Request): LinkedHashMap<String, Any> {
+                    val userModel = gson.fromJson(request.body().trim(), UserModel::class.java)
+                    val ok = UsersDB.update(userModel)
+                    val map = LinkedHashMap<String, Any>(1)
+                    map["ok"] = ok
+                    map["data"] = UsersDB.getAll()
+                    return map
+                }
+            }
+            return service
+        }
+        fun getUpload(): Service {
+            val service = Service()
+            service.method = Service.Method.POST
+            service.path = "/upload"
+            service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
+                fun doCall(file: File, request: Request): LinkedHashMap<String, Any> {
+                    val origName = request.queryParams("orig")
+                    Log.i(origName)
+                    val map = LinkedHashMap<String, Any>(1)
+                    mapOf("ok" to true)
                     return map
                 }
             }

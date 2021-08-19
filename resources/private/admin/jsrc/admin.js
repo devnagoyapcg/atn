@@ -1,7 +1,6 @@
 var url = "/auth/";
 var urlAtn = "/atn/";
 const _ = (k) => k;
-//var pdfmake = require('pdfmake');
 
 m2d2.ready($ => {
     $.dict.set({
@@ -15,21 +14,25 @@ m2d2.ready($ => {
             en : "OK"
         },
         cancel : {
-            en : "CANCEL"
+            en : "CANCEL",
         },
         upload : {
-            en : "UPLOAD"
+            en : "UPLOAD",
         },
         delete : {
-            en : "DELETE"
+            en : "DELETE",
+        },
+        edit : {
+            en : "EDIT",
         },
         print : {
-            en : "PRINT"
+            en : "PRINT",
         },
         save : {
-            en : "SAVE"
+            en : "SAVE",
         }
     });
+    $.session.set("id", 0);
     $(user, {});
     $(admin, {
         onload : function() {
