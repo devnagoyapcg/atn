@@ -12,7 +12,7 @@ import spark.Response
 
 class AuthService : ServiciableAuth {
     enum class Level {
-        GUEST, ADMIN
+        GUEST, USER, ADMIN
     }
 
     override fun getPath(): String {
@@ -47,8 +47,15 @@ class AuthService : ServiciableAuth {
                 ph.setPassword(*pass)
                 val login = ph.verify(hash)
                 if (login) {
-                    level = Level.ADMIN
-                    Log.s("[%s] logged in as %s", request?.ip(), user)
+                    level = if (user == "admin")
+                        Level.ADMIN
+                    else
+                        Level.USER
+                    map["user"] = user
+                    map["level"] = level
+                    map["post"] = post
+                    map["ip"] = request?.ip()!!
+                    Log.s("[%s] logged in as %s", request.ip(), user)
                 } else {
                     Log.s("[%s] Provided password is incorrect. Hash: [%s]", request?.ip(), ph.BCryptNoHeader())
                 }
@@ -60,10 +67,6 @@ class AuthService : ServiciableAuth {
         }
         if (level == Level.GUEST)
             response?.status(401)
-        map["user"] = user
-        map["level"] = level
-        map["post"] = post
-        map["ip"] = request?.ip()!!
         return map
     }
 
@@ -83,18 +86,19 @@ class AuthService : ServiciableAuth {
         const val authTable = "auth"
 
         fun getUserLevel(request: Request?): Level {
-            return if (request?.session()?.attribute<Level?>("level")?.toString()?.uppercase() == "GUEST")
-                Level.GUEST
-            else
+            return if (request?.session()?.attribute<Level?>("level")?.toString()?.uppercase() == "ADMIN") {
+                Log.i("${request.session()?.attribute<Level?>("level")}")
                 Level.ADMIN
+            } else if (request?.session()?.attribute<Level?>("level")?.toString()?.uppercase() == "USER") {
+                Log.i("${request.session()?.attribute<Level?>("level")}")
+                Level.USER
+            } else
+                Level.GUEST
         }
         fun Admin() = Allow { request ->
             if (request.session() != null) {
                 try {
-                    return@Allow request.ip() == request.session().attribute("ip") &&
-                            Level.valueOf(
-                                request.session().attribute<Any>("level").toString().uppercase()
-                            ) == Level.ADMIN
+                    return@Allow request.ip() == request.session().attribute("ip") && Level.valueOf(request.session().attribute<Any>("level").toString().uppercase()) == Level.ADMIN || request.ip() == request.session().attribute("ip") && Level.valueOf(request.session().attribute<Any>("level").toString().uppercase()) == Level.USER
                 } catch (e: Exception) {
                     Log.e("Error during authorization", e)
                     return@Allow false

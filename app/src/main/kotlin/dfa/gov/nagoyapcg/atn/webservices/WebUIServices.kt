@@ -7,6 +7,7 @@ import com.intellisrc.web.ServiciableMultiple
 import dfa.gov.nagoyapcg.atn.db.AtnDB
 import dfa.gov.nagoyapcg.atn.db.UsersDB
 import dfa.gov.nagoyapcg.atn.db.models.CaseModel
+import dfa.gov.nagoyapcg.atn.db.models.LinkModel
 import dfa.gov.nagoyapcg.atn.db.models.UserModel
 import groovy.lang.Closure
 import spark.Request
@@ -37,6 +38,8 @@ class WebUIServices : ServiciableMultiple {
         services.add(getUsers())
         services.add(updateUser())
         services.add(getUpload())
+        services.add(getSupportingFiles())
+        services.add(getUserLevel())
         return services
     }
 
@@ -49,7 +52,7 @@ class WebUIServices : ServiciableMultiple {
             service.path = "/page"
             service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
                 fun doCall(request: Request): LinkedHashMap<String, Any> {
-                    val page = if (AuthService.getUserLevel(request) == AuthService.Level.ADMIN)
+                    val page = if (AuthService.getUserLevel(request) == AuthService.Level.ADMIN || (AuthService.getUserLevel(request) == AuthService.Level.USER))
                         "admin.html"
                     else
                         "/"
@@ -198,9 +201,56 @@ class WebUIServices : ServiciableMultiple {
             service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
                 fun doCall(file: File, request: Request): LinkedHashMap<String, Any> {
                     val origName = request.queryParams("orig")
-                    Log.i(origName)
+                    val names = origName.split("-")
+                    val dir = File("resources/public/data/", names[0])
+                    if (!dir.exists()) {
+                        dir.mkdirs()
+                    }
+                    val downloadedFile = File(dir, names[1].replace(" ", "_"))
+                    Files.move(file.toPath(), downloadedFile.toPath())
                     val map = LinkedHashMap<String, Any>(1)
                     mapOf("ok" to true)
+                    return map
+                }
+            }
+            return service
+        }
+        fun getSupportingFiles(): Service {
+            val service = Service()
+            service.method = Service.Method.GET
+            service.allow = AuthService.Admin()
+            service.path = "/files"
+            service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
+                fun doCall(request: Request): LinkedHashMap<String, Any> {
+                    var ok = false
+                    val list = ArrayList<Map<String, Any>>()
+                    val dirName = request.queryParams("name")
+                    val userDir = File("resources/public/data/", dirName)
+                    if (userDir.exists()) {
+                        userDir.walkTopDown().forEach {
+                            if (!it.isDirectory)
+                                list.add(LinkModel(it.name.replace("_", " "), "/data/$dirName/${it.name.replace(" ", "_")}", "blue").toMap())
+                        }
+                        ok = true
+                    }
+                    val map = LinkedHashMap<String, Any>(1)
+                    map["ok"] = ok
+                    map["data"] = list
+                    return map
+                }
+            }
+            return service
+        }
+        fun getUserLevel(): Service {
+            val service = Service()
+            service.method = Service.Method.GET
+            service.allow = AuthService.Admin()
+            service.path = "/level"
+            service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
+                fun doCall(request: Request): LinkedHashMap<String, Any> {
+                    val map = LinkedHashMap<String, Any>(1)
+                    val level = AuthService.getUserLevel(request)
+                    map["level"] = level.name
                     return map
                 }
             }

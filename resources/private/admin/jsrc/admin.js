@@ -44,4 +44,8 @@ m2d2.ready($ => {
             }
         }
     });
+    $.get(urlAtn + "level", (res) => {
+        console.log("User level is " + res.level);
+        $.session.set("level", res.level);
+    });
 });

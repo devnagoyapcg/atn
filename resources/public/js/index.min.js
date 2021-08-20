@@ -124,17 +124,17 @@ m2d2.ready($ => {
                 if ($.session.get("logged") == "true") {
                     $.alert("You are already logged in.");
                 } else {
-                    $.session.set("user", user.value);
-                    $.post(url + "login", {
+                    var data = {
                         user : user.value,
                         pass : pass.value,
                         post : post.text
-                    }, (res) => {
+                    };
+                    $.session.set("user", user.value);
+                    $.post(url + "login", data, (res) => {
                         console.log(res);
                         console.log("Login successful!");
                         authLogin(true);
                     }, () => {
-                        localStorage.removeItem("user");
                         console.log("Login failed!");
                         authLogin(false);
                         $.failure("Username or Password is incorrect");
