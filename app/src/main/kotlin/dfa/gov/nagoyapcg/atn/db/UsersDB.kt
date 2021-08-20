@@ -24,12 +24,33 @@ class UsersDB() {
             db.close()
             return fromData(rows!!)
         }
+        fun create(user: Map<String, Any>): Boolean {
+            Log.i("Creating new user")
+            var ok = false
+            var db: DB = Database.getDefault().connect()
+            if (db.table(table).exists())
+                ok = db.table(table).insert(user)
+            else
+                Log.w("Table $table doesn't exist!")
+            db.close()
+            return ok
+        }
         fun update(data: UserModel): Boolean {
             Log.i("Updating user information")
             var ok = false
             val db: DB = Database.getDefault().connect()
             if (db.table(table).exists())
                 ok = db.table(table).key("id").update(data.toMap(), data.id)
+            else
+                Log.w("Table $table doesn't exist!")
+            db.close()
+            return ok
+        }
+        fun updatePass(id: Int, pass: String): Boolean {
+            var ok = false
+            val db: DB = Database.getDefault().connect()
+            if (db.table(table).exists())
+                ok = db.table(table).key("id").update(mapOf("pass" to pass), id)
             else
                 Log.w("Table $table doesn't exist!")
             db.close()
@@ -62,8 +83,8 @@ class UsersDB() {
                 when (inKey) {
                     "id" -> cleanMap[inKey] = input[inKey]
                     "user",
-                    "lastName",
                     "pass",
+                    "lastName",
                     "firstName" -> cleanMap[inKey] = input[inKey]
                     else -> {
                         Log.w("un-identified key $inKey")

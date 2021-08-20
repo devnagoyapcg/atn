@@ -2,6 +2,8 @@ package dfa.gov.nagoyapcg.atn.webservices
 
 import com.google.gson.Gson
 import com.intellisrc.core.Log
+import com.intellisrc.crypt.hash.PasswordHash
+import com.intellisrc.etc.Bytes
 import com.intellisrc.web.Service
 import com.intellisrc.web.ServiciableMultiple
 import dfa.gov.nagoyapcg.atn.db.AtnDB
@@ -13,8 +15,8 @@ import groovy.lang.Closure
 import spark.Request
 import spark.Response
 import java.io.File
+import java.nio.charset.Charset
 import java.nio.file.Files
-import java.util.LinkedHashMap
 
 class WebUIServices : ServiciableMultiple {
     override fun getPath(): String {
@@ -36,7 +38,9 @@ class WebUIServices : ServiciableMultiple {
         services.add(deleteCase())
         services.add(getNpcgLogo())
         services.add(getUsers())
+        services.add(createNewUser())
         services.add(updateUser())
+        services.add(updatePassword())
         services.add(getUpload())
         services.add(getSupportingFiles())
         services.add(getUserLevel())
@@ -177,6 +181,32 @@ class WebUIServices : ServiciableMultiple {
             }
             return service
         }
+        fun createNewUser(): Service {
+            val service = Service()
+            service.method = Service.Method.POST
+            service.allow = AuthService.Admin()
+            service.path = "/new"
+            service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
+                fun doCall(request: Request): LinkedHashMap<String, Any> {
+                    val map = LinkedHashMap<String, Any>(1)
+                    val user = gson.fromJson(request.body().trim(), HashMap::class.java)
+                    val pass = Bytes.fromString(user["pass"].toString())
+                    val hasher = PasswordHash()
+                    hasher.setPassword(*pass.toString().toCharArray())
+                    val hash = hasher.BCrypt()
+                    val ok = UsersDB.create(mapOf(
+                        "user" to user["user"].toString(),
+                        "pass" to hash,
+                        "lastName" to user["lastName"].toString(),
+                        "firstName" to user["firstName"].toString())
+                    )
+                    map["ok"] = ok
+                    map["data"] = UsersDB.getAll()
+                    return map
+                }
+            }
+            return service
+        }
         fun updateUser(): Service {
             val service = Service()
             service.method = Service.Method.POST
@@ -186,6 +216,27 @@ class WebUIServices : ServiciableMultiple {
                 fun doCall(request: Request): LinkedHashMap<String, Any> {
                     val userModel = gson.fromJson(request.body().trim(), UserModel::class.java)
                     val ok = UsersDB.update(userModel)
+                    val map = LinkedHashMap<String, Any>(1)
+                    map["ok"] = ok
+                    map["data"] = UsersDB.getAll()
+                    return map
+                }
+            }
+            return service
+        }
+        fun updatePassword(): Service {
+            val service = Service()
+            service.method = Service.Method.POST
+            service.allow = AuthService.Admin()
+            service.path = "/pass"
+            service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
+                fun doCall(request: Request): LinkedHashMap<String, Any> {
+                    val data = gson.fromJson(request.body().toString(), HashMap::class.java)
+                    val pass = Bytes.fromString(data["pass"].toString())
+                    val hasher = PasswordHash()
+                    hasher.setPassword(*pass.toString().toCharArray())
+                    val hash = hasher.BCrypt()
+                    val ok = UsersDB.updatePass(data["id"].toString().toInt(), hash)
                     val map = LinkedHashMap<String, Any>(1)
                     map["ok"] = ok
                     map["data"] = UsersDB.getAll()

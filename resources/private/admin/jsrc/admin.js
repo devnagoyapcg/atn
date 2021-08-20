@@ -32,12 +32,12 @@ m2d2.ready($ => {
             en : "SAVE",
         }
     });
-    $.session.set("id", 0);
     $(user, {});
     $(admin, {
         onload : function() {
             if ($.session.get("logged") === true) {
                 user.text = "Welcome, " + $.session.get("user") + "!";
+                init();
             } else {
                 $.session.clear();
                 window.location.href = "/";
@@ -48,4 +48,14 @@ m2d2.ready($ => {
         console.log("User level is " + res.level);
         $.session.set("level", res.level);
     });
+    function init() {
+        button_edit_password.disabled = true;
+        user_lastname.value         = "";
+        user_firstname.value        = "";
+        username.value              = "";
+        user_password.value         = "";
+        user_confirm_password.value = "";
+        $.session.set("id", 0);
+        $.session.set("userid", 0);
+    };
 });
