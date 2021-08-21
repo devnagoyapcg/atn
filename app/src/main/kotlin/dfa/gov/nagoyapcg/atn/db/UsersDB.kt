@@ -47,6 +47,7 @@ class UsersDB() {
             return ok
         }
         fun updatePass(id: Int, pass: String): Boolean {
+            Log.i("Updating user password")
             var ok = false
             val db: DB = Database.getDefault().connect()
             if (db.table(table).exists())
@@ -57,6 +58,7 @@ class UsersDB() {
             return ok
         }
         fun deleteUser(id: Int): Boolean {
+            Log.i("Deleting user")
             var ok = false
             val db: DB = Database.getDefault().connect()
             if (db.table(table).exists())
