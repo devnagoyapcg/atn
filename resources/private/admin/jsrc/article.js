@@ -145,7 +145,7 @@ m2d2.ready($ => {
                 }
             }
             if (onDone != undefined) { onDone = () => {
-                    $.alert("A file is successfully uploaded.");
+                    $.success("A file is successfully uploaded.");
                 }
             }
             this.xhr = xhr;
@@ -175,7 +175,6 @@ m2d2.ready($ => {
         onclick : function(ev) {
             $.delete(urlAtn + "delete/" + $.session.get("id"), (res) => {
                 if (res.ok) {
-                    $.alert("Case successfully deleted");
                     if (res.data.length > 0) {
                         case_list.items.clear();
                         res.data.forEach( item => {
@@ -205,6 +204,7 @@ m2d2.ready($ => {
                         button_edit.show         = false;
                         button_print.show        = false;
                     }
+                    $.success("Case successfully deleted");
                 }
             });
         }
@@ -265,7 +265,6 @@ m2d2.ready($ => {
                 if (this.value == "save") {
                     $.post(urlAtn + "add", data, (res) => {
                         if (res.ok) {
-                            $.alert("New record is saved!");
                             if (res.data.length > 0) {
                                 case_list.items.clear();
                                 res.data.forEach( item => {
@@ -289,6 +288,7 @@ m2d2.ready($ => {
                             }
                             box.classList.remove("show-bottom");
                             box.classList.toggle("show-front");
+                            $.success("New record is saved!");
                         } else {
                             $.failure("Error getting data!");
                         }
@@ -296,7 +296,6 @@ m2d2.ready($ => {
                 } else {
                     $.post(urlAtn + "edit", data, (res) => {
                         if (res.ok) {
-                            $.alert("Successfully saved!");
                             if (res.data.length > 0) {
                                 case_list.items.clear();
                                 res.data.forEach( item => {
@@ -331,6 +330,7 @@ m2d2.ready($ => {
                             } else {
                                 console.log("data is empty");
                             }
+                            $.success("Successfully saved!");
                         }
                     }, true);
                 }
@@ -611,19 +611,23 @@ m2d2.ready($ => {
                 i : {
                     className : "fa fa-trash-o",
                     onclick : function() {
-                        $.confirm("Are you sure you want to delete this user?", (res) => {
-                            if (res) {
-                                $.post(urlAtn + "deleteuser/" + $.session.get("userid"), (res) => {
-                                    if (res.ok) {
-                                        list_of_users.repopulate(res.data);
-                                        $.alert("User successfully deleted.");
-                                    } else {
-                                        $.failure("There's a problem deleting the user, please contact admin.");
-                                    }
-                                });
-                            } else {
-                            }
-                        });
+                        if ($.session.get("level") != "ADMIN") {
+                            $.alert("You're not authorized to edit the admin account");
+                        } else {
+                            $.confirm("Are you sure you want to delete this user?", (res) => {
+                                if (res) {
+                                    $.post(urlAtn + "deleteuser/" + $.session.get("userid"), (res) => {
+                                        if (res.ok) {
+                                            list_of_users.repopulate(res.data);
+                                            $.success("User successfully deleted.");
+                                        } else {
+                                            $.failure("There's a problem deleting the user, please contact admin.");
+                                        }
+                                    });
+                                } else {
+                                }
+                            });
+                        }
                     }
                 },
                 userLastName : {
@@ -724,7 +728,7 @@ m2d2.ready($ => {
                         $.post(urlAtn + "new", data, (res) => {
                             if (res.ok) {
                                 list_of_users.repopulate(res.data);
-                                $.alert("Successfully saved new user!");
+                                $.success("Successfully saved new user!");
                                 button_user_submit.clear();
                             } else {
                                 console.log("Server error!");
@@ -734,7 +738,7 @@ m2d2.ready($ => {
                         $.post(urlAtn + "update", data, (res) => {
                             if (res.ok) {
                                 list_of_users.repopulate(res.data);
-                                $.alert("Successfully updated!");
+                                $.success("Successfully updated!");
                                 button_user_submit.clear();
                             } else {
                                 console.log("Server error!");
@@ -773,21 +777,26 @@ m2d2.ready($ => {
                 $.post(urlAtn + "pass", data, (res) => {
                     if (res.ok) {
                         list_of_users.repopulate(res.data);
-                        $.alert("Password successfully updated.");
+                        $.success("Password successfully updated.");
                     } else {
                         $.failure("Failed to update password!");
                     }
                 }, true);
                 button_clear.clear();
             } else {
-                $.confirm("Are you sure you want to change your password?", (res) => {
-                    if (res) {
-                        user_password.disabled          = false;
-                        user_confirm_password.disabled  = false;
-                        button_edit_password.text       = "SAVE NEW PASSWORD";
-                        button_user_submit.show         = false;
-                    }
-                });
+                if ($.session.get("level") != "ADMIN") {
+                    $.alert("You're not authorized to edit the admin account");
+                    button_clear.clear();
+                } else {
+                    $.confirm("Are you sure you want to change your password?", (res) => {
+                        if (res) {
+                            user_password.disabled          = false;
+                            user_confirm_password.disabled  = false;
+                            button_edit_password.text       = "SAVE NEW PASSWORD";
+                            button_user_submit.show         = false;
+                        }
+                    });
+                }
             }
         }
     });
