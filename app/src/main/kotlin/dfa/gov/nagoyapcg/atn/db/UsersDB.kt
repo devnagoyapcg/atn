@@ -56,6 +56,16 @@ class UsersDB() {
             db.close()
             return ok
         }
+        fun deleteUser(id: Int): Boolean {
+            var ok = false
+            val db: DB = Database.getDefault().connect()
+            if (db.table(table).exists())
+                ok = db.table(table).key("id").delete(id)
+            else
+                Log.w("Table $table doesn't exist!")
+            db.close()
+            return ok
+        }
         private fun fromData(rows: Data): List<UserModel> {
             val list: MutableList<UserModel> = ArrayList()
             val data = rows.toListMap()

@@ -608,6 +608,24 @@ m2d2.ready($ => {
         template : {
             li : {
                 dataset : { id : "" },
+                i : {
+                    className : "fa fa-trash-o",
+                    onclick : function() {
+                        $.confirm("Are you sure you want to delete this user?", (res) => {
+                            if (res) {
+                                $.post(urlAtn + "deleteuser/" + $.session.get("userid"), (res) => {
+                                    if (res.ok) {
+                                        list_of_users.repopulate(res.data);
+                                        $.alert("User successfully deleted.");
+                                    } else {
+                                        $.failure("There's a problem deleting the user, please contact admin.");
+                                    }
+                                });
+                            } else {
+                            }
+                        });
+                    }
+                },
                 userLastName : {
                     tagName : "span",
                     className : "userLastName",
@@ -659,6 +677,17 @@ m2d2.ready($ => {
             }, () => {
                 console.log("Server error!");
             });
+        },
+        repopulate : function(data) {
+            this.items.clear();
+            data.forEach( item => {
+                this.items.push({
+                    dataset : { id : item.id },
+                    userLastName : { text : item.lastName },
+                    userFirstName : { text : item.firstName },
+                    userUsername : { text : item.user }
+                });
+            })
         }
     });
     $(button_user_submit, {
@@ -694,15 +723,7 @@ m2d2.ready($ => {
                     if ($.session.get("userid") == 0 || $.session.get("userid") == null) {
                         $.post(urlAtn + "new", data, (res) => {
                             if (res.ok) {
-                                list_of_users.items.clear();
-                                res.data.forEach( item => {
-                                    list_of_users.items.push({
-                                        dataset         : { id   : item.id },
-                                        userLastName    : { text : item.lastName },
-                                        userFirstName   : { text : item.firstName },
-                                        userUsername    : { text : item.user }
-                                    });
-                                })
+                                list_of_users.repopulate(res.data);
                                 $.alert("Successfully saved new user!");
                                 button_user_submit.clear();
                             } else {
@@ -712,15 +733,7 @@ m2d2.ready($ => {
                     } else {
                         $.post(urlAtn + "update", data, (res) => {
                             if (res.ok) {
-                                list_of_users.items.clear();
-                                res.data.forEach( item => {
-                                    list_of_users.items.push({
-                                        dataset         : { id   : item.id },
-                                        userLastName    : { text : item.lastName },
-                                        userFirstName   : { text : item.firstName },
-                                        userUsername    : { text : item.user }
-                                    });
-                                })
+                                list_of_users.repopulate(res.data);
                                 $.alert("Successfully updated!");
                                 button_user_submit.clear();
                             } else {
@@ -759,16 +772,8 @@ m2d2.ready($ => {
                 }
                 $.post(urlAtn + "pass", data, (res) => {
                     if (res.ok) {
+                        list_of_users.repopulate(res.data);
                         $.alert("Password successfully updated.");
-                        list_of_users.items.clear();
-                        res.data.forEach( item => {
-                            list_of_users.items.push({
-                                dataset         : { id : item.id },
-                                userLastName    : { text : item.lastName },
-                                userFirstName   : { text : item.firstName },
-                                userUsername    : { text : item.user }
-                            });
-                        })
                     } else {
                         $.failure("Failed to update password!");
                     }

@@ -204,6 +204,9 @@
                     border-top: 0;
                     vertical-align: middle;
                     text-align: center;
+                    &:hover {
+                        cursor: default;
+                    }
                     .lastname {
                         grid-area: last_name;
                     }
@@ -379,8 +382,8 @@
             padding: 0;
             display : grid;
             grid-gap: 0;
-            grid-template-columns: 300px 300px auto;
-            grid-template-areas: "user_last_name user_first_name user_username";
+            grid-template-columns: 20px 300px 300px 100%;
+            grid-template-areas: "icon user_last_name user_first_name user_username";
             grid-template-row: auto;
             li {
                 font-size: 18px;
@@ -393,6 +396,9 @@
                 vertical-align: middle;
                 text-align: center;
                 background-color: $purple;
+                #user_icons {
+                    grid-area: icon;
+                }
                 #user_last_name {
                     grid-area: user_last_name;
                 }
@@ -410,11 +416,20 @@
             li {
                 display: grid;
                 grid-gap: 0;
-                grid-template-columns: 300px 300px auto;
-                grid-template-areas: "user_last_name user_first_name user_username";
+                grid-template-columns: 20px 300px 300px 100%;
+                grid-template-areas: "icon user_last_name user_first_name user_username";
                 &:hover {
                     background-color: #8fbc8f;
                     cursor: default;
+                }
+                i {
+                    grid-area: icon;
+                    border-bottom: 1px solid $white;
+                    color: $white;
+                    text-align: center;
+                    &:hover {
+                        cursor: pointer;
+                    }
                 }
                 span {
                     font-size: 18px;
