@@ -254,7 +254,12 @@ class WebUIServices : ServiciableMultiple {
             service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
                 fun doCall(request: Request): LinkedHashMap<String, Any> {
                     val id = Integer.parseInt(request.params("id"))
-                    val ok = UsersDB.deleteUser(id)
+                    var ok = false
+                    Log.i("id is %d", id)
+                    if (id != 0 || id != 1) { // FIXME: why this check doesn't work?
+                        //ok = UsersDB.deleteUser(id)
+                        Log.i("Deleting admin user.")
+                    }
                     val map = LinkedHashMap<String, Any>(1)
                     map["ok"] = ok
                     map["data"] = UsersDB.getAll()

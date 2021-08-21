@@ -611,23 +611,18 @@ m2d2.ready($ => {
                 i : {
                     className : "fa fa-trash-o",
                     onclick : function() {
-                        if ($.session.get("level") != "ADMIN") {
-                            $.alert("You're not authorized to edit the admin account");
-                        } else {
-                            $.confirm("Are you sure you want to delete this user?", (res) => {
-                                if (res) {
-                                    $.post(urlAtn + "deleteuser/" + $.session.get("userid"), (res) => {
-                                        if (res.ok) {
-                                            list_of_users.repopulate(res.data);
-                                            $.success("User successfully deleted.");
-                                        } else {
-                                            $.failure("There's a problem deleting the user, please contact admin.");
-                                        }
-                                    });
-                                } else {
-                                }
-                            });
-                        }
+                        $.confirm("Are you sure you want to delete this user?", (res) => {
+                            if (res) {
+                                $.post(urlAtn + "deleteuser/" + $.session.get("userid"), (res) => {
+                                    if (res.ok) {
+                                        list_of_users.repopulate(res.data);
+                                        $.success("User successfully deleted.");
+                                    } else {
+                                        $.failure("There's a problem deleting the user, please contact admin.");
+                                    }
+                                });
+                            }
+                        });
                     }
                 },
                 userLastName : {
