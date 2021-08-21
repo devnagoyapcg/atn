@@ -256,7 +256,7 @@ class WebUIServices : ServiciableMultiple {
                     val id = Integer.parseInt(request.params("id"))
                     var ok = false
                     Log.i("id is %d", id)
-                    if (id != 0 || id != 1) { // FIXME: why this check doesn't work?
+                    if (id != 0 || id != 1) { // FIXME: why this condition were able to go through?
                         //ok = UsersDB.deleteUser(id)
                         Log.i("Deleting admin user.")
                     }
