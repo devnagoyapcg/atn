@@ -614,10 +614,11 @@ m2d2.ready($ => {
                         console.log(ev);
                         $.confirm("Are you sure you want to delete " + " user?", (res) => {
                             if (res) {
-                                $.post(urlAtn + "deleteuser/" + $.session.get("userid"), (res) => {
+                                $.post(urlAtn + "deleteuser/" + $.session.get("userid") + "/" + username.value, (res) => {
                                     if (res.ok) {
                                         list_of_users.repopulate(res.data);
                                         $.success("User successfully deleted.");
+                                        button_clear.clear();
                                     } else {
                                         $.failure(res.message);
                                     }

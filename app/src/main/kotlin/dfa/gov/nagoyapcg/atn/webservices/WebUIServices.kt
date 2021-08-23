@@ -204,7 +204,7 @@ class WebUIServices : ServiciableMultiple {
                             "lastName" to user["lastName"].toString(),
                             "firstName" to user["firstName"].toString())
                         )
-                        map["message"] = "Successfully saved new user!"
+                        map["message"] = "Successfully created new user!"
                     }
                     map["ok"] = ok
                     map["data"] = UsersDB.getAll()
@@ -255,20 +255,23 @@ class WebUIServices : ServiciableMultiple {
             val service = Service()
             service.method = Service.Method.POST
             service.allow = AuthService.Admin()
-            service.path = "/deleteuser/:id"
+            service.path = "/deleteuser/:id/:username"
             service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
                 fun doCall(request: Request): LinkedHashMap<String, Any> {
                     val id = Integer.parseInt(request.params("id"))
+                    val username = request.params("username")
                     val map = LinkedHashMap<String, Any>(1)
                     var ok = false
-                    Log.i("id is %d", id)
-                    if (id == 0 || id == 1) { // FIXME: why this condition were able to go through?
+                    if (request.session().attribute<Any>("user").toString() == username) {
                         map["message"] = "There's a problem deleting the user, please contact admin."
                     } else {
-                        if (request.session() != null) {
+                        if (request.session().attribute<Any>("user").toString() == UsersDB.getLoggedInUser(id))
                             map["message"] = "You cannot delete yourself while you are logged-in"
-                        } else
+                        else {
                             ok = UsersDB.deleteUser(id)
+                            if (ok)
+                                map["message"] = "User successfully deleted."
+                        }
                     }
                     map["ok"] = ok
                     map["data"] = UsersDB.getAll()
