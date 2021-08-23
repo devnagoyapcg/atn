@@ -107,7 +107,7 @@ m2d2.ready($ => {
     $(case_action_taken, {});
     $(case_status, {});
     $(case_priority, {});
-    $(case_officers, {});
+    $(case_officers, {}); // TODO: populate officers from the databaseSSS
     $(case_others, {
         onkeyup : (ev) => {
             var start = ev.target.selectionStart;
