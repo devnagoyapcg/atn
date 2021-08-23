@@ -610,15 +610,16 @@ m2d2.ready($ => {
                 dataset : { id : "" },
                 i : {
                     className : "fa fa-trash-o",
-                    onclick : function() {
-                        $.confirm("Are you sure you want to delete this user?", (res) => {
+                    onclick : function(ev) {
+                        console.log(ev);
+                        $.confirm("Are you sure you want to delete " + " user?", (res) => {
                             if (res) {
                                 $.post(urlAtn + "deleteuser/" + $.session.get("userid"), (res) => {
                                     if (res.ok) {
                                         list_of_users.repopulate(res.data);
                                         $.success("User successfully deleted.");
                                     } else {
-                                        $.failure("There's a problem deleting the user, please contact admin.");
+                                        $.failure(res.message);
                                     }
                                 });
                             }
@@ -723,10 +724,10 @@ m2d2.ready($ => {
                         $.post(urlAtn + "new", data, (res) => {
                             if (res.ok) {
                                 list_of_users.repopulate(res.data);
-                                $.success("Successfully saved new user!");
+                                $.success(res.message);
                                 button_user_submit.clear();
                             } else {
-                                console.log("Server error!");
+                                $.alert(res.message);
                             }
                         }, true);
                     } else {

@@ -68,6 +68,17 @@ class UsersDB() {
             db.close()
             return ok
         }
+        fun checkUsername(user: String): Boolean {
+            Log.i("Check username if exists")
+            var ok = false
+            val db: DB = Database.getDefault().connect()
+            if (db.table(table).exists())
+                ok = db.table(table).field("user").exists()
+            else
+                Log.w("Table $table doesn't exist!")
+            db.close()
+            return ok
+        }
         private fun fromData(rows: Data): List<UserModel> {
             val list: MutableList<UserModel> = ArrayList()
             val data = rows.toListMap()

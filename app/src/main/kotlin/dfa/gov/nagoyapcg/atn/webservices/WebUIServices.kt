@@ -190,17 +190,22 @@ class WebUIServices : ServiciableMultiple {
                 fun doCall(request: Request): LinkedHashMap<String, Any> {
                     val map = LinkedHashMap<String, Any>(1)
                     val user = gson.fromJson(request.body().trim(), HashMap::class.java)
-                    //val pass = Bytes.fromString(user["pass"].toString())
-                    val pass = user["pass"].toString().toCharArray()
-                    val hasher = PasswordHash()
-                    hasher.setPassword(*pass)
-                    val hash = hasher.BCrypt()
-                    val ok = UsersDB.create(mapOf(
-                        "user" to user["user"].toString(),
-                        "pass" to hash,
-                        "lastName" to user["lastName"].toString(),
-                        "firstName" to user["firstName"].toString())
-                    )
+                    var ok = false
+                    if (UsersDB.checkUsername(user["user"].toString()))
+                        map["message"] = "Username already exists!"
+                    else {
+                        val pass = user["pass"].toString().toCharArray()
+                        val hasher = PasswordHash()
+                        hasher.setPassword(*pass)
+                        val hash = hasher.BCrypt()
+                        ok = UsersDB.create(mapOf(
+                            "user" to user["user"].toString(),
+                            "pass" to hash,
+                            "lastName" to user["lastName"].toString(),
+                            "firstName" to user["firstName"].toString())
+                        )
+                        map["message"] = "Successfully saved new user!"
+                    }
                     map["ok"] = ok
                     map["data"] = UsersDB.getAll()
                     return map
@@ -254,13 +259,17 @@ class WebUIServices : ServiciableMultiple {
             service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
                 fun doCall(request: Request): LinkedHashMap<String, Any> {
                     val id = Integer.parseInt(request.params("id"))
+                    val map = LinkedHashMap<String, Any>(1)
                     var ok = false
                     Log.i("id is %d", id)
-                    if (id != 0 || id != 1) { // FIXME: why this condition were able to go through?
-                        //ok = UsersDB.deleteUser(id)
-                        Log.i("Deleting admin user.")
+                    if (id == 0 || id == 1) { // FIXME: why this condition were able to go through?
+                        map["message"] = "There's a problem deleting the user, please contact admin."
+                    } else {
+                        if (request.session() != null) {
+                            map["message"] = "You cannot delete yourself while you are logged-in"
+                        } else
+                            ok = UsersDB.deleteUser(id)
                     }
-                    val map = LinkedHashMap<String, Any>(1)
                     map["ok"] = ok
                     map["data"] = UsersDB.getAll()
                     return map
