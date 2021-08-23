@@ -61,19 +61,61 @@ m2d2.ready($ => {
         }
     });
     const box = $("#box", {});
-    $(case_last_name, {});
-    $(case_first_name, {});
-    $(case_middle_name, {});
+    $(case_last_name, {
+        onkeyup : (ev) => {
+            var start = ev.target.selectionStart;
+            var end = ev.target.selectionEnd;
+            ev.target.value = capitalizeWords(ev.target.value)
+            ev.target.setSelectionRange(start, end);
+        }
+    });
+    $(case_first_name, {
+        onkeyup : (ev) => {
+            var start = ev.target.selectionStart;
+            var end = ev.target.selectionEnd;
+            ev.target.value = capitalizeWords(ev.target.value)
+            ev.target.setSelectionRange(start, end);
+        }
+    });
+    $(case_middle_name, {
+        onkeyup : (ev) => {
+            var start = ev.target.selectionStart;
+            var end = ev.target.selectionEnd;
+            ev.target.value = capitalizeWords(ev.target.value)
+            ev.target.setSelectionRange(start, end);
+        }
+    });
     $(case_birthday, {});
-    $(case_birthplace, {});
+    $(case_birthplace, {
+        onkeyup : (ev) => {
+            var start = ev.target.selectionStart;
+            var end = ev.target.selectionEnd;
+            ev.target.value = capitalizeFirstLetter(ev.target.value)
+            ev.target.setSelectionRange(start, end);
+        }
+    });
     $(case_gender, {});
     $(case_date_recorded, {});
-    $(case_case, {});
+    $(case_case, {
+        onkeyup : (ev) => {
+            var start = ev.target.selectionStart;
+            var end = ev.target.selectionEnd;
+            ev.target.value = capitalizeFirstLetter(ev.target.value)
+            ev.target.setSelectionRange(start, end);
+        }
+    });
     $(case_action_taken, {});
     $(case_status, {});
     $(case_priority, {});
     $(case_officers, {});
-    $(case_others, {});
+    $(case_others, {
+        onkeyup : (ev) => {
+            var start = ev.target.selectionStart;
+            var end = ev.target.selectionEnd;
+            ev.target.value = capitalizeFirstLetter(ev.target.value)
+            ev.target.setSelectionRange(start, end);
+        }
+    });
     $(button_cancel, {
         onclick : function(ev) {
             case_title.text = "Add new case";
@@ -599,8 +641,22 @@ m2d2.ready($ => {
             case_others.disabled        = false;
         }
     });
-    $(user_lastname, {});
-    $(user_firstname, {});
+    $(user_lastname, {
+        onkeyup : (ev) => {
+            var start = ev.target.selectionStart;
+            var end = ev.target.selectionEnd;
+            ev.target.value = capitalizeWords(ev.target.value)
+            ev.target.setSelectionRange(start, end);
+        }
+    });
+    $(user_firstname, {
+        onkeyup : (ev) => {
+            var start = ev.target.selectionStart;
+            var end = ev.target.selectionEnd;
+            ev.target.value = capitalizeWords(ev.target.value)
+            ev.target.setSelectionRange(start, end);
+        }
+    });
     $(username, {});
     $(user_password, {});
     $(user_confirm_password, {});

@@ -2,6 +2,14 @@ var url = "/auth/";
 var urlAtn = "/atn/";
 const _ = (k) => k;
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function capitalizeWords(string) {
+    return string.replace(/(?:^|\s|-)\S/g, function(a) { return a.toUpperCase(); });
+};
+
 m2d2.ready($ => {
     $.dict.set({
         yes : {
@@ -42,7 +50,7 @@ m2d2.ready($ => {
                 $.session.clear();
                 window.location.href = "/";
             }
-        }
+        },
     });
     $.get(urlAtn + "level", (res) => {
         console.log("User level is " + res.level);
