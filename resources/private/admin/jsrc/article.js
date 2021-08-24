@@ -13,6 +13,10 @@ m2d2.ready($ => {
             settings_tab.style.display = "none";
             statistics.className = "";
             settings.className = "";
+            if (search.show == false || add_new_record.show == false) {
+                search.show = true;
+                add_new_record.show = true;
+            }
         }
     });
     $(statistics, {
@@ -28,6 +32,8 @@ m2d2.ready($ => {
             settings_tab.style.display = "none";
             cases.className = "";
             settings.className = "";
+            search.show = false;
+            add_new_record.show = false;
         }
     });
     $(settings, {
@@ -43,6 +49,8 @@ m2d2.ready($ => {
             settings_tab.style.display = "block";
             cases.className = "";
             statistics.className = "";
+            search.show = false;
+            add_new_record.show = false;
         }
     });
     $(cases_tab, {
