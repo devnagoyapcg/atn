@@ -93,6 +93,23 @@ class UsersDB() {
                 user = fromData(row)
             return user[0].user
         }
+        fun getOfficers(): List<String> {
+            Log.i("Get officers")
+            val officers = ArrayList<String>()
+            val db: DB = Database.getDefault().connect()
+            var rows: Data? = null
+            if (db.table(table).exists())
+                rows = db.table(table).get()
+            else
+                Log.w("Table $table doesn't exist!")
+            db.close()
+            fromData(rows!!).forEachIndexed { index, userModel ->
+                if (index > 0)
+                    officers.add("${userModel.lastName}, ${userModel.firstName}")
+            }
+            officers.sort()
+            return officers
+        }
         private fun fromData(rows: Data): List<UserModel> {
             val list: MutableList<UserModel> = ArrayList()
             val data = rows.toListMap()

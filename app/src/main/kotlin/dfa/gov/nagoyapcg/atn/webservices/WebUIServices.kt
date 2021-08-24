@@ -44,6 +44,7 @@ class WebUIServices : ServiciableMultiple {
         services.add(getUpload())
         services.add(getSupportingFiles())
         services.add(getUserLevel())
+        services.add(getOfficers())
         return services
     }
 
@@ -337,6 +338,20 @@ class WebUIServices : ServiciableMultiple {
                     val map = LinkedHashMap<String, Any>(1)
                     val level = AuthService.getUserLevel(request)
                     map["level"] = level.name
+                    return map
+                }
+            }
+            return service
+        }
+        fun getOfficers(): Service {
+            val service = Service()
+            service.method = Service.Method.GET
+            service.allow = AuthService.Admin()
+            service.path = "/officers"
+            service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
+                fun doCall(request: Request): LinkedHashMap<String, Any> {
+                    val map = LinkedHashMap<String, Any>(1)
+                    map["data"] = UsersDB.getOfficers()
                     return map
                 }
             }
