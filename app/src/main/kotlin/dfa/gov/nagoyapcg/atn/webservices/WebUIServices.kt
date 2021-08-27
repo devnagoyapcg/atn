@@ -221,9 +221,9 @@ class WebUIServices : ServiciableMultiple {
             service.path = "/update"
             service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
                 fun doCall(request: Request): LinkedHashMap<String, Any> {
+                    val map = LinkedHashMap<String, Any>(1)
                     val userModel = gson.fromJson(request.body().trim(), UserModel::class.java)
                     val ok = UsersDB.update(userModel)
-                    val map = LinkedHashMap<String, Any>(1)
                     map["ok"] = ok
                     map["data"] = UsersDB.getAll()
                     return map
@@ -263,15 +263,18 @@ class WebUIServices : ServiciableMultiple {
                     val username = request.params("username")
                     val map = LinkedHashMap<String, Any>(1)
                     var ok = false
-                    if (request.session().attribute<Any>("user").toString() == username) {
+                    if (id == 0 || id == 1) {
                         map["message"] = "There's a problem deleting the user, please contact admin."
                     } else {
                         if (request.session().attribute<Any>("user").toString() == UsersDB.getLoggedInUser(id))
                             map["message"] = "You cannot delete yourself while you are logged-in"
                         else {
-                            ok = UsersDB.deleteUser(id)
+                            if (request.session().attribute<Any>("user").toString() == "admin")
+                                ok = UsersDB.deleteUser(id)
                             if (ok)
                                 map["message"] = "User successfully deleted."
+                            else
+                                map["message"] = "Only the admin account can make modification to users."
                         }
                     }
                     map["ok"] = ok

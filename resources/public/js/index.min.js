@@ -1,4 +1,3 @@
-const posts = ["Tokyo", "Nagoya", "Osaka"];
 const url = "/auth/";
 const _ = (k) => k;
 
@@ -85,30 +84,6 @@ m2d2.ready($ => {
                 break;
         }
     });*/
-    $(post, {
-        text : "Post"
-    });
-    $(dropdown_content, {
-        show : false,
-        template : {
-            p : {
-                text : "",
-                onclick : function(ev) {
-                    post.text = this.text;
-                }
-            }
-        },
-        onload : function(ev) {
-            this.show = false;
-            this.items.clear();
-            for (var i = 0; i < 3; i++) {
-                this.items.push({
-                    dataset : { id : posts[i].toLowerCase() },
-                    text : posts[i]
-                });
-            }
-        }
-    });
     var user = $(username, {
         onload : function() {
             this.focus();
@@ -126,8 +101,7 @@ m2d2.ready($ => {
                 } else {
                     var data = {
                         user : user.value,
-                        pass : pass.value,
-                        post : post.text
+                        pass : pass.value
                     };
                     $.session.set("user", user.value);
                     $.post(url + "login", data, (res) => {
@@ -142,6 +116,19 @@ m2d2.ready($ => {
                 }
             }
             return false;
+        }
+    });
+    $(label_hide_show, {});
+    $(show_hide, {
+        text : "Show Password",
+        onclick : function(ev) {
+            if (pass.type === "password") {
+                pass.type = "text";
+                label_hide_show.text = "Hide Password"
+            } else {
+                pass.type = "password";
+                label_hide_show.text = "Show Password"
+            }
         }
     });
     $(login, {

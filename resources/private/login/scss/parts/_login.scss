@@ -24,33 +24,19 @@
                 font-size: 2em;
             }
             #password {
-                width: 100%;
-                border-radius: 10px;
-                font-size: 2em;
-            }
-            .dropdown {
-                width: 100%;
-                border-radius: 10px;
-                font-size: 2em;
                 position: relative;
-                display: inline-block;
-                background-color: $white;
-                margin-bottom: 16px;
-            }
-            .dropdown-content {
-                display: none;
-                position: absolute;
                 width: 100%;
-                z-index: 1;
-                background-color: $white;
                 border-radius: 10px;
+                font-size: 2em;
             }
-            .dropdown:hover .dropdown-content {
-                display: block;
+            #show_hide {
+                width: 25px;
+                height: 25px;
+                font-size: 1em;
             }
-            .dropdown-content p:hover {
-                cursor: pointer;
-                background-color: $highlight;
+            #label_hide_show {
+                font-size: 1.5em;
+                color: $white;
             }
             #submit {
                 margin: auto;

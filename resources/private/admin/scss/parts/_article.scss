@@ -327,6 +327,7 @@
                 border-right: 0.5px solid $white;
                 padding-right: 16px;
                 padding-left: 16px;
+                overflow-y: auto;
                 #user_lastname {
                     width: 100%;
                     font-size: 2em;
@@ -343,9 +344,31 @@
                     width: 100%;
                     font-size: 2em;
                 }
+                #show_hide {
+                    width: 25px;
+                    height: 25px;
+                    font-size: 1em;
+                    margin-top: 4px;
+                    margin-right: 4px;
+                }
+                #label_hide_show {
+                    font-size: 1.5em;
+                    color: $white;
+                }
                 #user_confirm_password {
                     width: 100%;
                     font-size: 2em;
+                }
+                #show_hide_confirm {
+                    width: 25px;
+                    height: 25px;
+                    font-size: 1em;
+                    margin-top: 4px;
+                    margin-right: 4px;
+                }
+                #label_hide_show_confirm {
+                    font-size: 1.5em;
+                    color: $white;
                 }
                 #user_buttons_container {
                     width: 100%;
