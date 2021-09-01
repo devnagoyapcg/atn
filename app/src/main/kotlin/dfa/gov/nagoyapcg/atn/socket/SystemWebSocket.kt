@@ -25,6 +25,14 @@ class SystemWebSocket : ServiciableWebSocket {
         return false
     }
 
+    override fun isReplaceOnDuplicate(): Boolean {
+        return false
+    }
+
+    override fun setReplaceOnDuplicate(replaceOnDuplicate: Boolean) {
+        TODO("Not yet implemented")
+    }
+
     override fun setBroadCaster(msgBroadCaster: WebSocketService.MsgBroadCaster?) { }
 
     override fun getUserID(params: MutableMap<String, MutableList<String>>?, remoteIP: InetAddress?): String {
@@ -66,18 +74,18 @@ class SystemWebSocket : ServiciableWebSocket {
                         if (login) {
                             level = AuthService.Level.ADMIN
                             //Log.s("[%s] logged in as %s", request.ip(), user)
-                            Log.s("logged in as %s", user)
+                            Log.i("logged in as %s", user)
                         } else {
                             //Log.s("[%s] Provided password is incorrect. Hash: [%s]", request.ip(), ph.BCryptNoHeader())
-                            Log.s("Provided password is incorrect. Hash: [%s]", ph.BCryptNoHeader())
+                            Log.w("Provided password is incorrect. Hash: [%s]", ph.BCryptNoHeader())
                         }
                     } else {
                         //Log.s("[%s] User %s not found.", request.ip(), user)
-                        Log.s("User %s not found.", user)
+                        Log.w("User %s not found.", user)
                     }
                 } else {
                     //Log.s("[%s] Password was empty", request.ip(), user)
-                    Log.s("password was empty", user)
+                    Log.w("password was empty", user)
                 }
             }
             "logout" -> {
@@ -91,6 +99,14 @@ class SystemWebSocket : ServiciableWebSocket {
     override fun onClientsChange(list: MutableList<String>?) { }
 
     override fun onError(session: Session?, message: String?) { }
+
+    override fun sendMessageTo(userID: String?, data: MutableMap<Any?, Any?>?): Boolean {
+        return false
+    }
+
+    override fun getBroadCaster(): WebSocketService.MsgBroadCaster {
+        return WebSocketService.MsgBroadCaster { message, onSuccess, onFail ->  }
+    }
 
     companion object {
         val gson = Gson()
