@@ -38,6 +38,7 @@ class App : SysService() {
 
     override fun onStop() {
         webService.stop()
+
         Database.getDefault().quit()
     }
 
