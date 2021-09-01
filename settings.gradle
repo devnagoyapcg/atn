@@ -1,2 +1,2 @@
-rootProject.name = 'dfa.gov.nagoyapcg.atn'
+rootProject.name = 'atn'
 include('app')

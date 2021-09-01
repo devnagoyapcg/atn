@@ -11,7 +11,7 @@ repositories {
     maven { url 'https://jitpack.io' }
 }
 dependencies {
-    def commonVer = "2.8.0-SNAPSHOT" //"2.7.17"
+    def commonVer = "2.8.0"
     def groovyVer = "3.0.7"
     def gsonVer = "2.8.7"
 
