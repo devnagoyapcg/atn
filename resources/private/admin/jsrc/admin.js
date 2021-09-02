@@ -1,5 +1,10 @@
 var url = "/auth/";
 var urlAtn = "/atn/";
+var dummy = [
+    {name : 'Luzon', population : 3000},
+    {name : 'Visayas', population : 2000},
+    {name : 'Mindanao', population : 1000}
+];
 const _ = (k) => k;
 
 function capitalizeFirstLetter(string) {
@@ -8,6 +13,10 @@ function capitalizeFirstLetter(string) {
 
 function capitalizeWords(string) {
     return string.replace(/(?:^|\s|-)\S/g, function(a) { return a.toUpperCase(); });
+};
+
+const randomColor = () => {
+    return "#" + Math.random().toString(16).slice(2, 8);
 };
 
 m2d2.ready($ => {

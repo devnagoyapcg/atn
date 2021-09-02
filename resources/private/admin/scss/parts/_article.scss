@@ -304,6 +304,20 @@
             }
         }
     }
+    #statistics_tab {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        #generate_report {
+            color: white;
+        }
+        #statistics_data {
+            color: $white;
+            width: inherit;
+            height: 800px;
+        }
+    }
     #settings_tab {
         margin: 0;
         padding: 0;

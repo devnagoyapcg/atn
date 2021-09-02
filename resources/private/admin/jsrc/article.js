@@ -34,6 +34,14 @@ m2d2.ready($ => {
             settings.className = "";
             search.show = false;
             add_new_record.show = false;
+
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(statistics_data.drawChart);
+        },
+        //TODO: research on how to detect change on windows screen size
+        onresize : function(ev) {
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(statistics_data.drawChart);
         }
     });
     $(settings, {
@@ -66,6 +74,28 @@ m2d2.ready($ => {
     $(settings_tab, {
         style : {
             display : "none"
+        }
+    });
+    $(statistics_data, {
+        drawChart : function() {
+            var data = google.visualization.arrayToDataTable([
+                ['Task', 'Accomplishment Report'],
+                ['Active', 8],
+                ['Case closed', 7],
+                ['For filing', 6]
+            ]);
+
+            // Optional; add a title and set the width and height of the chart
+            var options = {'title':'Average accomplishment per Month',
+                is3D: true, backgroundColor: 'transparent',
+                titleTextStyle: { color: 'white' },
+                legend: {
+                    textStyle: { color: 'white' }
+                }};
+
+            // Display the chart inside the <div> element with id="piechart"
+            var chart = new google.visualization.PieChart(statistics_data);
+            chart.draw(data, options);
         }
     });
     const box = $("#box", {});
@@ -405,12 +435,13 @@ m2d2.ready($ => {
         }
     });
     $(floating_close_button, {
-        onclick : (ev) => {
+        onclick : function(ev) {
             case_title.text = "Add new case";
             button_save.value = "save";
             add_new_record.clear();
             box.classList.remove("show-front");
             box.classList.toggle("show-bottom");
+            case_list.onEnable();
         }
     });
     $(case_title, {
@@ -611,23 +642,29 @@ m2d2.ready($ => {
         onload : function() {
             $.get("/atn/load", (res) => {
                 if (res.data.length > 0) {
+                    var bgColor = "";
                     this.items.clear();
                     res.data.forEach( item => {
+                        if (item.status == "Active") {
+                            bgColor = "#F06D65";
+                        } else {
+                            bgColor = "";
+                        }
                         this.items.push({
                             dataset      : { id : item.id },
-                            lastname     : { text : item.lastName },
-                            firstname    : { text : item.firstName },
-                            middlename   : { text : item.middleName },
-                            birthday     : { text : item.birthday },
-                            birthplace   : { text : item.birthPlace },
-                            gender       : { text : item.gender },
-                            daterecorded : { text : item.dateRecorded },
-                            casetype     : { text : item.case },
-                            action       : { text : item.action },
-                            status       : { text : item.status },
-                            priority     : { text : item.priority },
-                            officer      : { text : item.officer },
-                            others       : { text : item.others }
+                            lastname     : { text : item.lastName, style : { backgroundColor : bgColor }},
+                            firstname    : { text : item.firstName, style : { backgroundColor : bgColor }},
+                            middlename   : { text : item.middleName, style : { backgroundColor : bgColor }},
+                            birthday     : { text : item.birthday, style : { backgroundColor : bgColor }},
+                            birthplace   : { text : item.birthPlace, style : { backgroundColor : bgColor }},
+                            gender       : { text : item.gender, style : { backgroundColor : bgColor }},
+                            daterecorded : { text : item.dateRecorded, style : { backgroundColor : bgColor }},
+                            casetype     : { text : item.case, style : { backgroundColor : bgColor }},
+                            action       : { text : item.action, style : { backgroundColor : bgColor }},
+                            status       : { text : item.status, style : { backgroundColor : bgColor }},
+                            priority     : { text : item.priority, style : { backgroundColor : bgColor }},
+                            officer      : { text : item.officer, style : { backgroundColor : bgColor }},
+                            others       : { text : item.others}
                         });
                     })
                 } else {

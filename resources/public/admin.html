@@ -16,6 +16,7 @@
         <script src="js/pdfmake.min.js" type="text/javascript"></script>
         <script src="js/vfs_fonts.js" type="text/javascript"></script>
         <script src="js/require.js" type="text/javascript"></script>
+        <script src="js/loader.js" type="text/javascript"></script>
         <script src="js/m2d2.bundle.min.js" type="text/javascript"></script>
         <script src="js/m2d2.storage.min.js" type="text/javascript"></script>
         <script src="js/admin.min.js" type="text/javascript"></script>
@@ -33,6 +34,7 @@
                 <button id="statistics">Statistics <i class="fa fa-bar-chart" aria-hidden="true"></i></button>
                 <button id="settings">Settings <i class="fa fa-cogs" aria-hidden="true"></i></button>
             </div>
+            <!-- CASES TAB -->
             <section id="cases_tab" class="tab_content">
                 <div class="scene">
                     <div class="box" id="box">
@@ -106,8 +108,14 @@
                     </div>
                 </div>
             </section>
+            <!-- STATISTICS TAB -->
             <section id="statistics_tab" class="tab_content">
+                <div id="generate_report">
+                    <p>GENERATE REPORT</p>
+                </div>
+                <div id="statistics_data"></div>
             </section>
+            <!-- SETTINGS TAB -->
             <section id="settings_tab" class="tab_content">
                 <article id="user_settings">
                     <aside id="user_field">
