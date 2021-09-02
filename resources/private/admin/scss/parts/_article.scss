@@ -322,7 +322,6 @@
             #user_field {
                 grid-area: user_field;
                 display: grid;
-                place-items: center;
                 vertical-align: middle;
                 border-right: 0.5px solid $white;
                 padding-right: 16px;
@@ -375,6 +374,7 @@
                     margin: 0;
                     padding: 0;
                     display: flex;
+                    padding-bottom: 8px;
                     #button_user_submit, #button_edit_password, #button_clear {
                         flex-grow: 1;
                         margin: 0;
@@ -405,7 +405,7 @@
             padding: 0;
             display : grid;
             grid-gap: 0;
-            grid-template-columns: 20px 300px 300px 100%;
+            grid-template-columns: 20px 300px 300px 70%;
             grid-template-areas: "icon user_last_name user_first_name user_username";
             grid-template-row: auto;
             li {
@@ -439,7 +439,7 @@
             li {
                 display: grid;
                 grid-gap: 0;
-                grid-template-columns: 20px 300px 300px 100%;
+                grid-template-columns: 20px 300px 300px 70%;
                 grid-template-areas: "icon user_last_name user_first_name user_username";
                 &:hover {
                     background-color: #8fbc8f;

@@ -55,15 +55,15 @@ class AuthService : ServiciableAuth {
                     map["level"] = level
                     map["post"] = post
                     map["ip"] = request?.ip()!!
-                    Log.s("[%s] logged in as %s", request.ip(), user)
+                    Log.i("[%s] logged in as %s", request.ip(), user)
                 } else {
-                    Log.s("[%s] Provided password is incorrect. Hash: [%s]", request?.ip(), ph.BCryptNoHeader())
+                    Log.w("[%s] Provided password is incorrect. Hash: [%s]", request?.ip(), ph.BCryptNoHeader())
                 }
             } else {
-                Log.s("[%s] User %s not found.", request?.ip(), user)
+                Log.w("[%s] User %s not found.", request?.ip(), user)
             }
         } else {
-            Log.s("[%s] Password was empty", request?.ip(), user)
+            Log.w("[%s] Password was empty", request?.ip(), user)
         }
         if (level == Level.GUEST)
             response?.status(401)
@@ -76,9 +76,9 @@ class AuthService : ServiciableAuth {
             request.session().invalidate()
             ok = true
         } else {
-            Log.s("[%s] Session was empty", request.ip())
+            Log.w("[%s] Session was empty", request.ip())
         }
-        Log.s("[%s] logged out", request.ip())
+        Log.w("[%s] logged out", request.ip())
         return ok
     }
 

@@ -14,6 +14,9 @@ dependencies {
     def commonVer = "2.8.0"
     def groovyVer = "3.0.7"
     def gsonVer = "2.8.7"
+    def sqlVer = "8.0.25"
+    def postgreSqlVer = "42.2.23.jre7"
+    def sqLiteVer = "3.36.0.1"
 
     implementation "org.codehaus.groovy:groovy-all:${groovyVer}"
     implementation "com.intellisrc:core:${commonVer}"
@@ -22,6 +25,10 @@ dependencies {
     implementation "com.intellisrc:thread:${commonVer}"
     implementation "com.intellisrc:crypt:${commonVer}"
     implementation "com.google.code.gson:gson:${gsonVer}"
+    // Database
+    implementation "mysql:mysql-connector-java:${sqlVer}"
+    implementation "org.postgresql:postgresql:${postgreSqlVer}"
+    implementation "org.xerial:sqlite-jdbc:${sqLiteVer}"
     // UNIT TESTS
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.7.0"
