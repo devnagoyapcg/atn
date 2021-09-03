@@ -45,6 +45,7 @@ class WebUIServices : ServiciableMultiple {
         services.add(getSupportingFiles())
         services.add(getUserLevel())
         services.add(getOfficers())
+        services.add(getGeneratedReport())
         return services
     }
 
@@ -355,6 +356,24 @@ class WebUIServices : ServiciableMultiple {
                 fun doCall(request: Request): LinkedHashMap<String, Any> {
                     val map = LinkedHashMap<String, Any>(1)
                     map["data"] = UsersDB.getOfficers()
+                    return map
+                }
+            }
+            return service
+        }
+        fun getGeneratedReport(): Service {
+            val service = Service()
+            service.method = Service.Method.GET
+            service.allow = AuthService.Admin()
+            service.path = "/generate"
+            service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
+                fun doCall(request: Request): LinkedHashMap<String, Any> {
+                    val map = LinkedHashMap<String, Any>(1)
+                    val data = gson.fromJson(request.body().toString(), HashMap::class.java)
+                    Log.i(data.toString())
+                    val from = data["start"].toString()
+                    val to = data["end"].toString()
+                    map["data"] = AtnDB.generate(from, to)
                     return map
                 }
             }

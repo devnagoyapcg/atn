@@ -16,8 +16,10 @@ function capitalizeWords(string) {
 };
 
 function getNewDate(newDateTime) {
-    // TODO: make the first calendar to start with the first date of the month
-    return newDateTime ? new Date(newDateTime) : new Date();
+    var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+    var firstDay = new Date(y, m, 1);
+    var lastDay = new Date(y, m + 1, 0);
+    return newDateTime ? new Date(newDateTime) : firstDay;
 }
 function getDate(newDateTime) {
     return getNewDate(newDateTime).toLocaleDateString("ja-JP", { year: "numeric", month:"2-digit", day:"2-digit", timezone : "Tokyo/Asia" }).replace(/[/]/g,"-");

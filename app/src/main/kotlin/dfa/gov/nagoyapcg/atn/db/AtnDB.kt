@@ -94,6 +94,15 @@ class AtnDB {
             db.close()
             return ok
         }
+        fun generate(from: String, to: String): List<CaseModel> {
+            val db: DB = Database.getDefault().connect()
+            var rows: Data? = null
+            if (db.table(table).exists()) {
+                rows = db.table(table).get(mapOf("dateRecorded" to from, "dateRecorded" to to))
+            } else
+                Log.w("Table $table doesn't exist!")
+            return fromData(rows!!)
+        }
         private fun fromData(rows: Data): List<CaseModel> {
             val list: MutableList<CaseModel> = ArrayList()
             val data = rows.toListMap()

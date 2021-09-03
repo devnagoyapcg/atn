@@ -333,6 +333,13 @@
                     flex-grow: 1;
                     font-size: 2em;
                     margin-right: 8px;
+                    border-radius: 10px;
+                    background-image: linear-gradient($red, $yellow);
+                    &:hover {
+                        background-image: linear-gradient($green, $green);
+                        color: $white;
+                        cursor: pointer;
+                    }
                 }
             }
         }

@@ -77,8 +77,25 @@ m2d2.ready($ => {
             oninput : function() {}
         },
         date_end : {
-            value : getDate(),
+            value : getDate(new Date()),
             oninput : function() {}
+        },
+        button_generate : {
+            onclick : function() {
+                var from = date_start.value;
+                var to = date_end.value;
+                var data = {
+                    start : from,
+                    end : to
+                };
+                // TODO: something's doesn't work here
+                $.get(urlAtn + "generate", data, (res) => {
+                    if (res.ok) {
+                    } else {
+                        $.failure("Failed to get data from " + from + " to " + to);
+                    }
+                });
+            }
         }
     });
     $(statistics_data, {
@@ -927,7 +944,7 @@ m2d2.ready($ => {
                 var data = {
                     id : $.session.get("userid"),
                     pass : user_confirm_password.value
-                }
+                };
                 $.post(urlAtn + "pass", data, (res) => {
                     if (res.ok) {
                         list_of_users.repopulate(res.data);
