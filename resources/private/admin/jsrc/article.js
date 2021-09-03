@@ -37,11 +37,6 @@ m2d2.ready($ => {
 
             google.charts.load('current', {'packages':['corechart']});
             google.charts.setOnLoadCallback(statistics_data.drawChart);
-        },
-        //TODO: research on how to detect change on windows screen size
-        onresize : function(ev) {
-            google.charts.load('current', {'packages':['corechart']});
-            google.charts.setOnLoadCallback(statistics_data.drawChart);
         }
     });
     $(settings, {
@@ -76,6 +71,16 @@ m2d2.ready($ => {
             display : "none"
         }
     });
+    $(date_container, {
+        date_start : {
+            value : getDate(),
+            oninput : function() {}
+        },
+        date_end : {
+            value : getDate(),
+            oninput : function() {}
+        }
+    });
     $(statistics_data, {
         drawChart : function() {
             var data = google.visualization.arrayToDataTable([
@@ -88,10 +93,23 @@ m2d2.ready($ => {
             // Optional; add a title and set the width and height of the chart
             var options = {'title':'Average accomplishment per Month',
                 is3D: true, backgroundColor: 'transparent',
-                titleTextStyle: { color: 'white' },
+                titleTextStyle: {
+                    color: 'white',
+                    fontSize: 18
+                },
                 legend: {
-                    textStyle: { color: 'white' }
-                }};
+                    alignment: 'center',
+                    position: 'bottom',
+                    textStyle: {
+                        color: 'white'
+                    }
+                },
+                slices: {
+                    0: { color: 'red' },
+                    1: { color: 'blue' },
+                    2: { color: 'green' }
+                }
+            };
 
             // Display the chart inside the <div> element with id="piechart"
             var chart = new google.visualization.PieChart(statistics_data);

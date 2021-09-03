@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-us">
     <head>
         <meta charset="UTF-8">
         <title>ATN System</title>
@@ -112,6 +112,15 @@
             <section id="statistics_tab" class="tab_content">
                 <div id="generate_report">
                     <p>GENERATE REPORT</p>
+                    <fieldset id="date_container">
+                        <p id="date_start">
+                            <label>Start:</label><input type="date" class="date_start"/>
+                        </p>
+                        <p id="date_end">
+                            <label>End:</label><input type="date" class="date_end"/>
+                        </p>
+                        <button id="button_generate">Generate</button>
+                    </fieldset>
                 </div>
                 <div id="statistics_data"></div>
             </section>

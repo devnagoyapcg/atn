@@ -15,6 +15,17 @@ function capitalizeWords(string) {
     return string.replace(/(?:^|\s|-)\S/g, function(a) { return a.toUpperCase(); });
 };
 
+function getNewDate(newDateTime) {
+    // TODO: make the first calendar to start with the first date of the month
+    return newDateTime ? new Date(newDateTime) : new Date();
+}
+function getDate(newDateTime) {
+    return getNewDate(newDateTime).toLocaleDateString("ja-JP", { year: "numeric", month:"2-digit", day:"2-digit", timezone : "Tokyo/Asia" }).replace(/[/]/g,"-");
+}
+function getTime(newDateTime) {
+    return getNewDate(newDateTime).toLocaleTimeString("ja-JP", { timezone : "Tokyo/Asia" });
+}
+
 const randomColor = () => {
     return "#" + Math.random().toString(16).slice(2, 8);
 };
@@ -60,6 +71,10 @@ m2d2.ready($ => {
                 window.location.href = "/";
             }
         },
+        onresize : function() {
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(statistics_data.drawChart);
+        }
     });
     $.get(urlAtn + "level", (res) => {
         console.log("User level is " + res.level);
