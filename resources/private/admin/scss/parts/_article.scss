@@ -317,22 +317,32 @@
             color: white;
             #date_container {
                 display: flex;
-                #date_start {
+                height: auto;
+                #start_date {
                     flex-grow: 1;
                     label {
                         margin-right: 8px;
                     }
                 }
-                #date_end {
+                #end_date {
                     flex-grow: 1;
                     label {
                         margin-right: 8px;
+                    }
+                }
+                #officers {
+                    flex-grow: 1;
+                    height: 55px;
+                    option {
+                        font-size: 2em;
                     }
                 }
                 #button_generate {
+                    height: 55px;
                     flex-grow: 1;
                     font-size: 2em;
                     margin-right: 8px;
+                    margin-left: 8px;
                     border-radius: 10px;
                     background-image: linear-gradient($red, $yellow);
                     &:hover {

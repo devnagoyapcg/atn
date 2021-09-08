@@ -10,6 +10,9 @@ import com.intellisrc.db.Query
 import dfa.gov.nagoyapcg.atn.db.models.CaseModel
 import java.io.*
 import java.nio.file.Files
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -36,7 +39,6 @@ class AtnDB {
             return file
         }
         fun getAll(): List<CaseModel> {
-            val list = ArrayList<CaseModel>()
             val db: DB = Database.getDefault().connect()
             var rows: Data? = null
             if (db.table(table).exists()) {
@@ -94,13 +96,17 @@ class AtnDB {
             db.close()
             return ok
         }
-        fun generate(from: String, to: String): List<CaseModel> {
+        fun generate(from: String, to: String, officer: String): List<CaseModel> {
             val db: DB = Database.getDefault().connect()
             var rows: Data? = null
             if (db.table(table).exists()) {
-                rows = db.table(table).get(mapOf("dateRecorded" to from, "dateRecorded" to to))
+                if (officer == "All")
+                    rows = db.table(table).where("dateRecorded BETWEEN ? AND ?", from, to).get()
+                else
+                    rows = db.table(table).where("dateRecorded BETWEEN ? AND ?", from, to).key("officer").get(officer)
             } else
                 Log.w("Table $table doesn't exist!")
+            db.close()
             return fromData(rows!!)
         }
         private fun fromData(rows: Data): List<CaseModel> {
@@ -136,7 +142,6 @@ class AtnDB {
         }
         private fun cleanInputMap(input: Map<Any?, Any?>?): Map<Any?, Any?> {
             val cleanMap = HashMap<Any?, Any?>()
-            var ok = false
             for (inKey in input?.keys!!) {
                 when (inKey) {
                     "id" -> cleanMap[inKey] = input[inKey]
@@ -155,7 +160,6 @@ class AtnDB {
                     "others" -> cleanMap[inKey] = input[inKey]
                     else -> {
                         Log.w("Un-identified key $inKey")
-                        ok = false
                     }
                 }
             }

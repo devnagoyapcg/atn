@@ -1,10 +1,5 @@
 var url = "/auth/";
 var urlAtn = "/atn/";
-var dummy = [
-    {name : 'Luzon', population : 3000},
-    {name : 'Visayas', population : 2000},
-    {name : 'Mindanao', population : 1000}
-];
 const _ = (k) => k;
 
 function capitalizeFirstLetter(string) {
@@ -74,8 +69,17 @@ m2d2.ready($ => {
             }
         },
         onresize : function() {
-            google.charts.load('current', {'packages':['corechart']});
-            google.charts.setOnLoadCallback(statistics_data.drawChart);
+            var from = date_start.value;
+            var to = date_end.value;
+            var data = {
+                start : from,
+                end : to,
+                officer : officers.value
+            };
+            $.post(urlAtn + "generate", data, (res) => {
+                google.charts.load('current', {'packages':['corechart']});
+                google.charts.setOnLoadCallback(statistics_data.drawChart(res.data));
+            }, true);
         }
     });
     $.get(urlAtn + "level", (res) => {

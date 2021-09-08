@@ -35,8 +35,17 @@ m2d2.ready($ => {
             search.show = false;
             add_new_record.show = false;
 
-            google.charts.load('current', {'packages':['corechart']});
-            google.charts.setOnLoadCallback(statistics_data.drawChart);
+            var from = date_start.value;
+            var to = date_end.value;
+            var data = {
+                start : from,
+                end : to,
+                officer : officers.value
+            };
+            $.post(urlAtn + "generate", data, (res) => {
+                google.charts.load('current', {'packages':['corechart']});
+                google.charts.setOnLoadCallback(statistics_data.drawChart(res.data));
+            }, true);
         }
     });
     $(settings, {
@@ -74,11 +83,34 @@ m2d2.ready($ => {
     $(date_container, {
         date_start : {
             value : getDate(),
-            oninput : function() {}
+            oninput : function(ev) {
+                this.value = ev.target.value;
+            }
         },
         date_end : {
             value : getDate(new Date()),
-            oninput : function() {}
+            oninput : function(ev) {
+                this.value = ev.target.value;
+            }
+        },
+        officers : {
+            template : {
+                option : {
+                    tagName : "option",
+                    text : "All"
+                }
+            },
+            onload : function(ev) {
+                $.get(urlAtn + "officers", (res) => {
+                    this.items.clear();
+                    this.items.push({ text : "All" });
+                    res.data.forEach(item => {
+                        this.items.push({
+                            text : item
+                        })
+                    })
+                });
+            }
         },
         button_generate : {
             onclick : function() {
@@ -86,27 +118,23 @@ m2d2.ready($ => {
                 var to = date_end.value;
                 var data = {
                     start : from,
-                    end : to
+                    end : to,
+                    officer : officers.value
                 };
-                // TODO: something's doesn't work here
-                $.get(urlAtn + "generate", data, (res) => {
-                    if (res.ok) {
-                    } else {
-                        $.failure("Failed to get data from " + from + " to " + to);
-                    }
-                });
+                $.post(urlAtn + "generate", data, (res) => {
+                    google.charts.load('current', {'packages':['corechart']});
+                    google.charts.setOnLoadCallback(statistics_data.drawChart(res.data));
+                }, true);
             }
         }
     });
     $(statistics_data, {
-        drawChart : function() {
-            var data = google.visualization.arrayToDataTable([
-                ['Task', 'Accomplishment Report'],
-                ['Active', 8],
-                ['Case closed', 7],
-                ['For filing', 6]
-            ]);
-
+        drawChart : function(data) {
+            var arr = [];
+            var tmp = Object.entries(data);
+            tmp.forEach(item => {
+                arr.push([item[0], item[1]]);
+            })
             // Optional; add a title and set the width and height of the chart
             var options = {'title':'Average accomplishment per Month',
                 is3D: true, backgroundColor: 'transparent',
@@ -129,8 +157,8 @@ m2d2.ready($ => {
             };
 
             // Display the chart inside the <div> element with id="piechart"
-            var chart = new google.visualization.PieChart(statistics_data);
-            chart.draw(data, options);
+            var chart = new google.visualization.PieChart(this);
+            chart.draw(google.visualization.arrayToDataTable(arr), options);
         }
     });
     const box = $("#box", {});

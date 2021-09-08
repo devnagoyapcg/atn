@@ -363,17 +363,22 @@ class WebUIServices : ServiciableMultiple {
         }
         fun getGeneratedReport(): Service {
             val service = Service()
-            service.method = Service.Method.GET
+            service.method = Service.Method.POST
             service.allow = AuthService.Admin()
             service.path = "/generate"
             service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
                 fun doCall(request: Request): LinkedHashMap<String, Any> {
                     val map = LinkedHashMap<String, Any>(1)
                     val data = gson.fromJson(request.body().toString(), HashMap::class.java)
-                    Log.i(data.toString())
                     val from = data["start"].toString()
                     val to = data["end"].toString()
-                    map["data"] = AtnDB.generate(from, to)
+                    val officer = data["officer"].toString()
+                    val list = AtnDB.generate(from, to, officer)
+                    map["data"] = mapOf("Status" to "Quantity",
+                        "Active" to list.filter { it.status == "Active" }.size,
+                        "Case close" to list.filter { it.status == "Case closed" }.size,
+                        "For filing" to list.filter { it.status == "For filing" }.size
+                    )
                     return map
                 }
             }
