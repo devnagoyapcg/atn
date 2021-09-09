@@ -318,17 +318,14 @@
             #date_container {
                 display: flex;
                 height: auto;
+                label {
+                    margin-right: 8px;
+                }
                 #start_date {
                     flex-grow: 1;
-                    label {
-                        margin-right: 8px;
-                    }
                 }
                 #end_date {
                     flex-grow: 1;
-                    label {
-                        margin-right: 8px;
-                    }
                 }
                 #officers {
                     flex-grow: 1;

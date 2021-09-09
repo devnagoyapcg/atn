@@ -18,8 +18,9 @@
     "express-cdn": "^0.4.0",
     "expressjs": "^1.0.1",
     "pdfmake": "^0.2.2",
-    "gulp-nw-builder": "1.4.0",
-    "nw": "0.54.0"
+    "gulp-nw-builder": "^1.4.0",
+    "nw": "^0.54.0",
+    "echarts": "^5.2.0"
   },
   "main": "gulpfile.js",
   "devDependencies": {
