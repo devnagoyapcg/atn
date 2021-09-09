@@ -75,6 +75,7 @@ m2d2.ready($ => {
             button_delete.show  = false;
             button_edit.show    = false;
             button_print.show   = false;
+            case_list.onEnable();
         }
     });
 });
