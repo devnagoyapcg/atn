@@ -424,25 +424,7 @@ m2d2.ready($ => {
                     $.post(urlAtn + "add", data, (res) => {
                         if (res.ok) {
                             if (res.data.length > 0) {
-                                case_list.items.clear();
-                                res.data.forEach( item => {
-                                    case_list.items.push({
-                                        dataset      : { id : item.id },
-                                        lastname     : { text : item.lastName },
-                                        firstname    : { text : item.firstName },
-                                        middlename   : { text : item.lastName },
-                                        birthday     : { text : item.birthday },
-                                        birthplace   : { text : item.birthPlace },
-                                        gender       : { text : item.gender },
-                                        daterecorded : { text : item.dateRecorded },
-                                        casetype     : { text : item.case },
-                                        action       : { text : item.action },
-                                        status       : { text : item.status },
-                                        priority     : { text : item.priority },
-                                        officer      : { text : item.officer },
-                                        others       : { text : item.others }
-                                    });
-                                })
+                                case_list.onPopulateTable(res.data);
                             }
                             box.classList.remove("show-bottom");
                             box.classList.toggle("show-front");
@@ -455,25 +437,7 @@ m2d2.ready($ => {
                     $.post(urlAtn + "edit", data, (res) => {
                         if (res.ok) {
                             if (res.data.length > 0) {
-                                case_list.items.clear();
-                                res.data.forEach( item => {
-                                    case_list.items.push({
-                                        dataset      : { id : item.id },
-                                        lastname     : { text : item.lastName },
-                                        firstname    : { text : item.firstName },
-                                        middlename   : { text : item.middleName },
-                                        birthday     : { text : item.birthday },
-                                        birthplace   : { text : item.birthPlace },
-                                        gender       : { text : item.gender },
-                                        daterecorded : { text : item.dateRecorded },
-                                        casetype     : { text : item.case },
-                                        action       : { text : item.action },
-                                        status       : { text : item.status },
-                                        priority     : { text : item.priority },
-                                        officer      : { text : item.officer },
-                                        others       : { text : item.others }
-                                    });
-                                })
+                                case_list.onPopulateTable(res.data);
                                 $.session.set("id", 0);
 
                                 box.classList.remove("show-bottom");
@@ -503,6 +467,13 @@ m2d2.ready($ => {
             box.classList.remove("show-front");
             box.classList.toggle("show-bottom");
             case_list.onEnable();
+        },
+        onkeyup : function(ev) {
+            if (ev.key === "Escape" || ev.which === 27) {
+                box.classList.remove("show-front");
+                box.classList.toggle("show-bottom");
+                case_list.onEnable();
+            }
         }
     });
     $(case_title, {
@@ -611,7 +582,7 @@ m2d2.ready($ => {
                     })
                     console.log(list);
                 } else {
-                    $.failure("Something wrong getting the supported files. Please check if folder exists.");
+                    $.failure(res.message);
                 }
             });
             var dd = {
@@ -622,13 +593,16 @@ m2d2.ready($ => {
                         alignment   : 'center'
                     },
                     {
-                        text : '\n\n'
+                        text : '\n'
                     },
                     {
                         text        : 'Assistance to Nationals (ATN) Unit',
                         alignment   : 'center',
                         bold        : true,
                         fontSize    : 14
+                    },
+                    {
+                        text : '\n'
                     },
                     {
                         table : {
@@ -653,7 +627,7 @@ m2d2.ready($ => {
                         }
                     },
                     {
-                        text        : '\nSupporting document\n\n',
+                        text        : '\nSupporting document/s:\n\n',
                         style       : 'header',
                         alignment   : 'left',
                         bold        : true,
@@ -701,37 +675,66 @@ m2d2.ready($ => {
             });
         },
         onload : function() {
-            $.get("/atn/load", (res) => {
-                if (res.data.length > 0) {
-                    var bgColor = "";
-                    this.items.clear();
-                    res.data.forEach( item => {
-                        if (item.status == "Active") {
-                            bgColor = "#F06D65";
-                        } else {
-                            bgColor = "";
-                        }
-                        this.items.push({
-                            dataset      : { id : item.id },
-                            lastname     : { text : item.lastName, style : { backgroundColor : bgColor }},
-                            firstname    : { text : item.firstName, style : { backgroundColor : bgColor }},
-                            middlename   : { text : item.middleName, style : { backgroundColor : bgColor }},
-                            birthday     : { text : item.birthday, style : { backgroundColor : bgColor }},
-                            birthplace   : { text : item.birthPlace, style : { backgroundColor : bgColor }},
-                            gender       : { text : item.gender, style : { backgroundColor : bgColor }},
-                            daterecorded : { text : item.dateRecorded, style : { backgroundColor : bgColor }},
-                            casetype     : { text : item.case, style : { backgroundColor : bgColor }},
-                            action       : { text : item.action, style : { backgroundColor : bgColor }},
-                            status       : { text : item.status, style : { backgroundColor : bgColor }},
-                            priority     : { text : item.priority, style : { backgroundColor : bgColor }},
-                            officer      : { text : item.officer, style : { backgroundColor : bgColor }},
-                            others       : { text : item.others}
-                        });
-                    })
-                } else {
-                    console.log("data is empty");
-                }
-            });
+            this.onPopulateTable(null);
+        },
+        onPopulateTable : function(data) {
+            this.items.clear();
+            var bgColor = "";
+            if (data != null) {
+                data.forEach(item => {
+                    if (item.status == "Active") {
+                        bgColor = "#F06D65";
+                    } else {
+                        bgColor = "";
+                    }
+                    this.items.push({
+                        dataset      : { id : item.id },
+                        lastname     : { text : item.lastName, style : { backgroundColor : bgColor }},
+                        firstname    : { text : item.firstName, style : { backgroundColor : bgColor }},
+                        middlename   : { text : item.middleName, style : { backgroundColor : bgColor }},
+                        birthday     : { text : item.birthday, style : { backgroundColor : bgColor }},
+                        birthplace   : { text : item.birthPlace, style : { backgroundColor : bgColor }},
+                        gender       : { text : item.gender, style : { backgroundColor : bgColor }},
+                        daterecorded : { text : item.dateRecorded, style : { backgroundColor : bgColor }},
+                        casetype     : { text : item.case, style : { backgroundColor : bgColor }},
+                        action       : { text : item.action, style : { backgroundColor : bgColor }},
+                        status       : { text : item.status, style : { backgroundColor : bgColor }},
+                        priority     : { text : item.priority, style : { backgroundColor : bgColor }},
+                        officer      : { text : item.officer, style : { backgroundColor : bgColor }},
+                        others       : { text : item.others}
+                    });
+                })
+            } else {
+                $.get("/atn/load", (res) => {
+                    if (res.data.length > 0) {
+                        res.data.forEach( item => {
+                            if (item.status == "Active") {
+                                bgColor = "#F06D65";
+                            } else {
+                                bgColor = "";
+                            }
+                            this.items.push({
+                                dataset      : { id : item.id },
+                                lastname     : { text : item.lastName, style : { backgroundColor : bgColor }},
+                                firstname    : { text : item.firstName, style : { backgroundColor : bgColor }},
+                                middlename   : { text : item.middleName, style : { backgroundColor : bgColor }},
+                                birthday     : { text : item.birthday, style : { backgroundColor : bgColor }},
+                                birthplace   : { text : item.birthPlace, style : { backgroundColor : bgColor }},
+                                gender       : { text : item.gender, style : { backgroundColor : bgColor }},
+                                daterecorded : { text : item.dateRecorded, style : { backgroundColor : bgColor }},
+                                casetype     : { text : item.case, style : { backgroundColor : bgColor }},
+                                action       : { text : item.action, style : { backgroundColor : bgColor }},
+                                status       : { text : item.status, style : { backgroundColor : bgColor }},
+                                priority     : { text : item.priority, style : { backgroundColor : bgColor }},
+                                officer      : { text : item.officer, style : { backgroundColor : bgColor }},
+                                others       : { text : item.others}
+                            });
+                        })
+                    } else {
+                        console.log("data is empty");
+                    }
+                });
+            }
         },
         onDisable : function() {
             case_last_name.disabled     = true;

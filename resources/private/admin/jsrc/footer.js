@@ -50,6 +50,7 @@ m2d2.ready($ => {
                 });
             } else {
                 box.classList.toggle("show-bottom");
+                this.clear();
             }
         },
         sleep : (ms) => {

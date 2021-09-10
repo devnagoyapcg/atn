@@ -13,7 +13,6 @@ import dfa.gov.nagoyapcg.atn.db.models.LinkModel
 import dfa.gov.nagoyapcg.atn.db.models.UserModel
 import groovy.lang.Closure
 import spark.Request
-import spark.Response
 import java.io.File
 import java.nio.file.Files
 
@@ -73,6 +72,7 @@ class WebUIServices : ServiciableMultiple {
         fun onSuccessLogout(): Service {
             val service = Service()
             service.method = Service.Method.GET
+            service.allow = AuthService.Admin()
             service.path = "/logout"
             service.action = Service.Action {
                 val page = "/"
@@ -96,7 +96,7 @@ class WebUIServices : ServiciableMultiple {
             service.allow = AuthService.Admin()
             service.path = "/load"
             service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
-                fun doCall(request: Request): LinkedHashMap<String, Any> {
+                fun doCall(): LinkedHashMap<String, Any> {
                     val map = LinkedHashMap<String, Any>(1)
                     map["data"] = AtnDB.getAll()
                     return map
@@ -111,7 +111,7 @@ class WebUIServices : ServiciableMultiple {
             service.allow = AuthService.Admin()
             service.path = "/add"
             service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
-                fun doCall(request: Request, response: Response): LinkedHashMap<String, Any> {
+                fun doCall(request: Request): LinkedHashMap<String, Any> {
                     if (request.body().trim().isNotEmpty()) {
                         val caseModel = gson.fromJson(request.body().trim(), CaseModel::class.java)
                         caseModel.id = AtnDB.getLastID() + 1
@@ -132,7 +132,7 @@ class WebUIServices : ServiciableMultiple {
             service.allow = AuthService.Admin()
             service.path = "/edit"
             service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
-                fun doCall(request: Request, response: Response): LinkedHashMap<String, Any> {
+                fun doCall(request: Request): LinkedHashMap<String, Any> {
                     val caseModel = gson.fromJson(request.body().trim(), CaseModel::class.java)
                     val ok = AtnDB.saveEditing(caseModel)
                     val map = LinkedHashMap<String, Any>(1)
@@ -175,7 +175,7 @@ class WebUIServices : ServiciableMultiple {
             service.allow = AuthService.Admin()
             service.path = "/users"
             service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
-                fun doCall(request: Request): LinkedHashMap<String, Any> {
+                fun doCall(): LinkedHashMap<String, Any> {
                     val map = LinkedHashMap<String, Any>(1)
                     map["data"] = UsersDB.getAll()
                     return map
@@ -261,7 +261,6 @@ class WebUIServices : ServiciableMultiple {
             service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
                 fun doCall(request: Request): LinkedHashMap<String, Any> {
                     val id = Integer.parseInt(request.params("id"))
-                    val username = request.params("username")
                     val map = LinkedHashMap<String, Any>(1)
                     var ok = false
                     if (id == 0 || id == 1) {
@@ -314,6 +313,7 @@ class WebUIServices : ServiciableMultiple {
             service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
                 fun doCall(request: Request): LinkedHashMap<String, Any> {
                     var ok = false
+                    val map = LinkedHashMap<String, Any>(1)
                     val list = ArrayList<Map<String, Any>>()
                     val dirName = request.queryParams("name")
                     val userDir = File("resources/public/data/", dirName)
@@ -323,8 +323,8 @@ class WebUIServices : ServiciableMultiple {
                                 list.add(LinkModel(it.name.replace("_", " "), "/data/$dirName/${it.name.replace(" ", "_")}", "blue").toMap())
                         }
                         ok = true
-                    }
-                    val map = LinkedHashMap<String, Any>(1)
+                    } else
+                        map["message"] = "None existing supporting document/s."
                     map["ok"] = ok
                     map["data"] = list
                     return map
@@ -353,7 +353,7 @@ class WebUIServices : ServiciableMultiple {
             service.allow = AuthService.Admin()
             service.path = "/officers"
             service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
-                fun doCall(request: Request): LinkedHashMap<String, Any> {
+                fun doCall(): LinkedHashMap<String, Any> {
                     val map = LinkedHashMap<String, Any>(1)
                     map["data"] = UsersDB.getOfficers()
                     return map
