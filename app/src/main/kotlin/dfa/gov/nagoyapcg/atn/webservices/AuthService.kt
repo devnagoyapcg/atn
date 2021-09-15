@@ -7,12 +7,13 @@ import com.intellisrc.db.Database
 import com.intellisrc.web.JSON
 import com.intellisrc.web.Service.Allow
 import com.intellisrc.web.ServiciableAuth
+import dfa.gov.nagoyapcg.atn.db.models.UserModel
 import spark.Request
 import spark.Response
 
 class AuthService : ServiciableAuth {
     enum class Level {
-        GUEST, USER, ADMIN
+        GUEST, USER, ADMIN, SUPER
     }
 
     override fun getPath(): String {
@@ -37,30 +38,33 @@ class AuthService : ServiciableAuth {
         val json = JSON.decode(request?.body()).toMap()
         val user = json["user"].toString()
         val pass = json["pass"].toString().toCharArray()
-        val post = json["post"].toString()
         if (pass.isNotEmpty()) {
-            val db: DB = Database.getDefault().connect()
-            val hash = db.table(authTable).field("pass").key("user")[user].toString()
-            db.close()
-            if (hash.isNotEmpty()) {
-                val ph = PasswordHash()
-                ph.setPassword(*pass)
-                val login = ph.verify(hash)
-                if (login) {
-                    level = if (user == "admin")
-                        Level.ADMIN
-                    else
-                        Level.USER
-                    map["user"] = user
-                    map["level"] = level
-                    map["post"] = post
-                    map["ip"] = request?.ip()!!
-                    Log.i("[%s] logged in as %s", request.ip(), user)
-                } else {
-                    Log.w("[%s] Provided password is incorrect. Hash: [%s]", request?.ip(), ph.BCryptNoHeader())
-                }
+            if (request?.session() != null && request.session()?.attribute<UserModel?>("user")?.toString() == user) {
+                map["message"] = "User is already logged in. Please check other computer."
             } else {
-                Log.w("[%s] User %s not found.", request?.ip(), user)
+                val db: DB = Database.getDefault().connect()
+                val hash = db.table(authTable).field("pass").key("user")[user].toString()
+                db.close()
+                if (hash.isNotEmpty()) {
+                    val ph = PasswordHash()
+                    ph.setPassword(*pass)
+                    val login = ph.verify(hash)
+                    if (login) {
+                        level = when (user) {
+                            "superadministrator" -> Level.SUPER
+                            "admin" -> Level.ADMIN
+                            else -> Level.USER
+                        }
+                        map["user"] = user
+                        map["level"] = level
+                        map["ip"] = request?.ip()!!
+                        Log.i("[%s] logged in as %s", request.ip(), user)
+                    } else {
+                        Log.w("[%s] Provided password is incorrect. Hash: [%s]", request?.ip(), ph.BCryptNoHeader())
+                    }
+                } else {
+                    Log.w("[%s] User %s not found.", request?.ip(), user)
+                }
             }
         } else {
             Log.w("[%s] Password was empty", request?.ip(), user)
@@ -86,7 +90,10 @@ class AuthService : ServiciableAuth {
         const val authTable = "auth"
 
         fun getUserLevel(request: Request?): Level {
-            return if (request?.session()?.attribute<Level?>("level")?.toString()?.uppercase() == "ADMIN") {
+            return if (request?.session()?.attribute<Level?>("level")?.toString()?.uppercase() == "SUPER") {
+                Log.i("${request.session()?.attribute<Level?>("level")}")
+                Level.SUPER
+            } else if (request?.session()?.attribute<Level?>("level")?.toString()?.uppercase() == "ADMIN") {
                 Log.i("${request.session()?.attribute<Level?>("level")}")
                 Level.ADMIN
             } else if (request?.session()?.attribute<Level?>("level")?.toString()?.uppercase() == "USER") {
@@ -98,7 +105,9 @@ class AuthService : ServiciableAuth {
         fun Admin() = Allow { request ->
             if (request.session() != null) {
                 try {
-                    return@Allow request.ip() == request.session().attribute("ip") && Level.valueOf(request.session().attribute<Any>("level").toString().uppercase()) == Level.ADMIN || request.ip() == request.session().attribute("ip") && Level.valueOf(request.session().attribute<Any>("level").toString().uppercase()) == Level.USER
+                    return@Allow request.ip() == request.session().attribute("ip") && Level.valueOf(request.session().attribute<Any>("level").toString().uppercase()) == Level.SUPER ||
+                            request.ip() == request.session().attribute("ip") && Level.valueOf(request.session().attribute<Any>("level").toString().uppercase()) == Level.ADMIN ||
+                            request.ip() == request.session().attribute("ip") && Level.valueOf(request.session().attribute<Any>("level").toString().uppercase()) == Level.USER
                 } catch (e: Exception) {
                     Log.e("Error during authorization", e)
                     return@Allow false

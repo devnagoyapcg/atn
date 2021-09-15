@@ -29,7 +29,7 @@ class WebUIServices : ServiciableMultiple {
         val services: MutableList<Service> = ArrayList()
         services.add(onLoggedIn())
         services.add(onSuccessLogout())
-        services.add(onSuperAdmin())
+        //services.add(onSuperAdmin())
         services.add(getAll())
         services.add(onSaveNewCase())
         services.add(onSaveEditing())
@@ -59,6 +59,8 @@ class WebUIServices : ServiciableMultiple {
                 fun doCall(request: Request): LinkedHashMap<String, Any> {
                     val page = if (AuthService.getUserLevel(request) == AuthService.Level.ADMIN || (AuthService.getUserLevel(request) == AuthService.Level.USER))
                         "admin.html"
+                    else if (AuthService.getUserLevel(request) == AuthService.Level.SUPER)
+                        "super.html"
                     else
                         "/"
                     val map = LinkedHashMap<String, Any>(1)
@@ -242,7 +244,7 @@ class WebUIServices : ServiciableMultiple {
                     val data = gson.fromJson(request.body().toString(), HashMap::class.java)
                     val pass = Bytes.fromString(data["pass"].toString())
                     val hasher = PasswordHash()
-                    hasher.setPassword(*pass.toString().toCharArray())
+                    hasher.setPassword(*data["pass"].toString().toCharArray())
                     val hash = hasher.BCrypt()
                     val ok = UsersDB.updatePass(data["id"].toString().toInt(), hash)
                     val map = LinkedHashMap<String, Any>(1)
@@ -269,7 +271,8 @@ class WebUIServices : ServiciableMultiple {
                         if (request.session().attribute<Any>("user").toString() == UsersDB.getLoggedInUser(id))
                             map["message"] = "You cannot delete yourself while you are logged-in"
                         else {
-                            if (request.session().attribute<Any>("user").toString() == "admin")
+                            if (request.session().attribute<Any>("user").toString() == "admin" ||
+                                request.session().attribute<Any>("user").toString() == "superadministrator")
                                 ok = UsersDB.deleteUser(id)
                             if (ok)
                                 map["message"] = "User successfully deleted."

@@ -4,7 +4,168 @@
     background-color: $background;
     display: grid;
     grid-gap: 0;
-    grid-template-columns: 100%;
-    grid-template-rows: 6%;
-    grid-template-areas: "tab";
+    height: 100%;
+    grid-template-columns: 40% 60%;
+    grid-template-row: auto;
+    grid-template-areas: "user_field user_list";
+    #user_field {
+        grid-area: user_field;
+        display: grid;
+        vertical-align: middle;
+        border-right: 0.5px solid $white;
+        padding-right: 16px;
+        padding-left: 16px;
+        overflow-y: auto;
+        #user_lastname {
+            width: 100%;
+            font-size: 2em;
+        }
+        #user_firstname {
+            width: 100%;
+            font-size: 2em;
+        }
+        #username {
+            width: 100%;
+            font-size: 2em;
+        }
+        #user_password {
+            width: 100%;
+            font-size: 2em;
+        }
+        #show_hide {
+            width: 25px;
+            height: 25px;
+            font-size: 1em;
+            margin-top: 4px;
+            margin-right: 4px;
+        }
+        #label_hide_show {
+            font-size: 1.5em;
+            color: $white;
+        }
+        #user_confirm_password {
+            width: 100%;
+            font-size: 2em;
+        }
+        #show_hide_confirm {
+            width: 25px;
+            height: 25px;
+            font-size: 1em;
+            margin-top: 4px;
+            margin-right: 4px;
+        }
+        #label_hide_show_confirm {
+            font-size: 1.5em;
+            color: $white;
+        }
+        #user_buttons_container {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            padding-bottom: 8px;
+            #button_user_submit, #button_edit_password, #button_clear {
+                flex-grow: 1;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                font-size: 2em;
+                background-image: linear-gradient($deep_sky_blue, $dodger_blue);
+                &:hover {
+                    background-image: linear-gradient($green, $green);
+                    box-shadow: 0 0 6px 3px $light_blue;
+                }
+            }
+        }
+        label {
+            float: left;
+            color: $white;
+            font-size: 1.5em;
+        }
+    }
+    #user_list {
+        grid-area: user_list;
+        border-left: 0.5px solid $white;
+        height: 100%;
+        overflow-x: auto;
+    }
+    #user_header_list {
+        margin: 0;
+        padding: 0;
+        display : grid;
+        grid-gap: 0;
+        grid-template-columns: 20px 300px 300px 70%;
+        grid-template-areas: "icon user_last_name user_first_name user_username";
+        grid-template-row: auto;
+        li {
+            font-size: 18px;
+            color: $white;
+            list-style: none;
+            white-space: normal;
+            list-style-position: inside;
+            border: 1px solid $white;
+            border-top: 0;
+            vertical-align: middle;
+            text-align: center;
+            background-color: $purple;
+            #user_icons {
+                grid-area: icon;
+            }
+            #user_last_name {
+                grid-area: user_last_name;
+            }
+            #user_first_name {
+                grid-area: user_first_name;
+            }
+            #user_username {
+                grid-area: user_username;
+            }
+        }
+    }
+    #list_of_users {
+        margin: 0;
+        padding: 0;
+        li {
+            display: grid;
+            grid-gap: 0;
+            grid-template-columns: 20px 300px 300px 70%;
+            grid-template-areas: "icon user_last_name user_first_name user_username";
+            &:hover {
+                background-color: #8fbc8f;
+                cursor: default;
+            }
+            i {
+                grid-area: icon;
+                border-bottom: 1px solid $white;
+                color: $white;
+                text-align: center;
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+            span {
+                font-size: 18px;
+                color: $white;
+                list-style: none;
+                white-space: normal;
+                list-style-position: inside;
+                border: 1px solid $white;
+                border-top: 0;
+                vertical-align: middle;
+                text-align: center;
+                .userLastName {
+                    grid-area: user_last_name;
+                }
+                .userFirstName {
+                    grid-area: user_first_name;
+                }
+                .userUsername {
+                    grid-area: user_username;
+                }
+                &:hover {
+                    cursor: default;
+                }
+            }
+        }
+    }
 }

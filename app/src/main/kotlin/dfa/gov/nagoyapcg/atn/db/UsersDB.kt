@@ -18,7 +18,7 @@ class UsersDB() {
             val db: DB = Database.getDefault().connect()
             var rows: Data? = null
             if (db.table(table).exists())
-                rows = db.table(table).get()
+                rows = db.table(table).where("user <> ?", "superadministrator").get()
             else
                 Log.w("Table $table doesn't exist!")
             db.close()

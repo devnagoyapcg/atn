@@ -2,6 +2,7 @@
   .m2d2-alert-front {
     min-width: 400px;
     min-height: 100px;
+    max-width: 70%;
     background-color: $background;
     border: 1px solid $highlight;
     outline: 2px solid $background;
@@ -58,25 +59,37 @@
     .m2d2-alert-field {
       border: 0;
     }
-    .m2d2-alert-field, .m2d2-alert-field input, {
-      width: 100%;
+    .m2d2-alert-field,
+    .m2d2-alert-field input,
+    .m2d2-alert-field textarea {
+      max-width: 100%;
+    }
+    .m2d2-alert-field p * {
+        vertical-align: top;
+    }
+    .m2d2-alert-field ul {
+    }
+    .m2d2-alert-field li {
+    }
+    .m2d2-alert-field span {
+        text-align: left;
     }
     .m2d2-alert-buttons {
       padding: $dbl_padding;
       width : 100%;
       button {
         min-width: 100px;
-        font-size: 24px;
+        font-size: 28px;
         border-radius: 10px;
       }
-      .ok, .yes, .send {
+      .ok, .yes, .send, .save, .print {
         float: right;
         background-color: $blue;
         color: $white;
       }
       .no, .cancel {
         float: left;
-        background-color: $blue;
+        background-color: $red;
         color: $white;
       }
     }

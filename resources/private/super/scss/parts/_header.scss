@@ -2,7 +2,17 @@
     margin: 0;
     padding: 0;
     background-color: $highlight;
+    height: auto;
+    border-bottom: 1px solid $white;
+    #user {
+        display:inline-block;
+        vertical-align: middle;
+        float: left;
+        margin-left: 4px;
+    }
     #logout {
+        display:inline-block;
+        vertical-align: middle;
         float: right;
         font-size: 25px;
         margin-top: 4px;

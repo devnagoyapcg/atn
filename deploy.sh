@@ -16,7 +16,7 @@ cp config.properties deploy/
 cp run deploy/
 #cp kiosk deploy/
 
-rsync -iaL --exclude=private/ --exclude=img/* resources/ deploy/resources/
+rsync -iaL --exclude=private/ resources/ deploy/resources/
 rsync -ia --delete app/lib/ deploy/lib/
 LOG=log/
 if [[ -f "$LOG" ]]; then

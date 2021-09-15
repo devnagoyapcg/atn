@@ -7,6 +7,7 @@ import com.intellisrc.core.SysService
 import com.intellisrc.db.Database
 import com.intellisrc.web.WebService
 import dfa.gov.nagoyapcg.atn.db.AtnDB
+import dfa.gov.nagoyapcg.atn.db.SuperAuthService
 import dfa.gov.nagoyapcg.atn.webservices.AuthService
 import dfa.gov.nagoyapcg.atn.socket.SystemWebSocket
 import dfa.gov.nagoyapcg.atn.webservices.WebUIServices

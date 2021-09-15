@@ -93,28 +93,5 @@
         color: $white;
       }
     }
-    ul {
-        display: flex;
-        justify-content: normal;
-        flex-wrap: wrap;
-        overflow-y: auto;
-        li {
-            list-style: none;
-            vertical-align: middle;
-            display: block;
-            width: 100%;
-            span {
-                width: 24%;
-                display: inline-block;
-                vertical-align: middle;
-            }
-            input, textarea, select {
-                font-size : 24px;
-                width: 65%;
-                vertical-align: middle;
-                margin : 4px;
-            }
-        }
-    }
   }
 }
