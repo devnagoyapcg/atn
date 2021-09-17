@@ -5,13 +5,15 @@ data class UserModel(
     var user: String = "",
     var lastName: String = "",
     var firstName: String = "",
+    var status: Boolean = false
 ) {
     fun toMap(): Map<String, Any> {
         return mapOf(
             "id"        to id,
             "user"      to user,
             "lastName"  to lastName,
-            "firstName" to firstName
+            "firstName" to firstName,
+            "status"    to status
         )
     }
 }

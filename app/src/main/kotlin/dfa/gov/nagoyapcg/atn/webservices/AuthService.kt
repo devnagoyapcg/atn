@@ -39,12 +39,13 @@ class AuthService : ServiciableAuth {
         val user = json["user"].toString()
         val pass = json["pass"].toString().toCharArray()
         if (pass.isNotEmpty()) {
-            if (request?.session() != null && request.session()?.attribute<UserModel?>("user")?.toString() == user) {
-                map["message"] = "User is already logged in. Please check other computer."
+            val db: DB = Database.getDefault().connect()
+            val hash = db.table(authTable).field("pass").key("user")[user].toString()
+            if (db.table(authTable).field("status").key("user")[user].toString() == "1") {
+                Log.i("user $user already logged in")
+                response?.status(409)
+                return map
             } else {
-                val db: DB = Database.getDefault().connect()
-                val hash = db.table(authTable).field("pass").key("user")[user].toString()
-                db.close()
                 if (hash.isNotEmpty()) {
                     val ph = PasswordHash()
                     ph.setPassword(*pass)
@@ -55,6 +56,7 @@ class AuthService : ServiciableAuth {
                             "admin" -> Level.ADMIN
                             else -> Level.USER
                         }
+                        db.table(authTable).key("user").update(mapOf("status" to 1), user)
                         map["user"] = user
                         map["level"] = level
                         map["ip"] = request?.ip()!!
@@ -66,6 +68,7 @@ class AuthService : ServiciableAuth {
                     Log.w("[%s] User %s not found.", request?.ip(), user)
                 }
             }
+            db.close()
         } else {
             Log.w("[%s] Password was empty", request?.ip(), user)
         }

@@ -3,6 +3,8 @@ package dfa.gov.nagoyapcg.atn.webservices
 import com.google.gson.Gson
 import com.intellisrc.core.Log
 import com.intellisrc.crypt.hash.PasswordHash
+import com.intellisrc.db.DB
+import com.intellisrc.db.Database
 import com.intellisrc.etc.Bytes
 import com.intellisrc.web.Service
 import com.intellisrc.web.ServiciableMultiple
@@ -73,12 +75,19 @@ class WebUIServices : ServiciableMultiple {
         }
         fun onSuccessLogout(): Service {
             val service = Service()
-            service.method = Service.Method.GET
-            service.allow = AuthService.Admin()
+            service.method = Service.Method.POST
             service.path = "/logout"
-            service.action = Service.Action {
-                val page = "/"
-                mapOf("page" to page)
+            service.action = object : Closure<LinkedHashMap<String?, Boolean?>?>(this, this) {
+                fun doCall(request: Request): LinkedHashMap<String, Any> {
+                    val map = LinkedHashMap<String, Any>(1)
+                    val user = gson.fromJson(request.body().trim(), HashMap::class.java)
+                    val db: DB = Database.getDefault().connect()
+                    db.table(AuthService.authTable).key("user").update(mapOf("status" to 0), user["user"].toString())
+                    db.close()
+                    val page = "/"
+                    map["page"] = page
+                    return map
+                }
             }
             return service
         }

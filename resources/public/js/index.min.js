@@ -111,7 +111,7 @@ m2d2.ready($ => {
                     }, () => {
                         console.log("Login failed!");
                         authLogin(false);
-                        $.failure("Username or Password is incorrect");
+                        $.failure("Username or Password is incorrect or user is already logged in from different computer.");
                     }, true);
                 }
             }

@@ -128,7 +128,8 @@ class UsersDB() {
                 cleanData["id"].toString().toInt(),
                 cleanData["user"].toString(),
                 cleanData["lastName"].toString(),
-                cleanData["firstName"].toString()
+                cleanData["firstName"].toString(),
+                cleanData["status"].toString().toBoolean()
             )
         }
         private fun cleanInputMap(input: Map<Any?, Any?>?): Map<Any?, Any?> {
@@ -139,7 +140,8 @@ class UsersDB() {
                     "user",
                     "pass",
                     "lastName",
-                    "firstName" -> cleanMap[inKey] = input[inKey]
+                    "firstName",
+                    "status" -> cleanMap[inKey] = input[inKey]
                     else -> {
                         Log.w("un-identified key $inKey")
                     }
