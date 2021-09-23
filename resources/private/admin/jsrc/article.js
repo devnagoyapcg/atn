@@ -790,8 +790,22 @@ m2d2.ready($ => {
         template : {
             li : {
                 dataset : { id : "" },
-                i : {
-                    className : "fa fa-trash-o",
+                userStatus : {
+                    tagName : "i",
+                    className : "fa fa-sign-out userStatus",
+                    onclick : function(ev) {
+                        if (this.dataset.id == "true") {
+                            $.confirm("Are you sure you want to sign-out this user?", (res) => {
+                                if (res) {
+                                   $.get(url + "logout", (res) => {});
+                                }
+                            });
+                        }
+                    }
+                },
+                userDelete : {
+                    tagName : "i",
+                    className : "fa fa-trash-o userDelete",
                     onclick : function(ev) {
                         $.confirm("Are you sure you want to delete " + " user?", (res) => {
                             if (res) {
@@ -845,12 +859,22 @@ m2d2.ready($ => {
             $.get(urlAtn + "users", (res) => {
                 if (res.data.length > 0) {
                     this.items.clear();
+                    var bgColor = "";
+                    var enable = "";
                     res.data.forEach( item => {
+                        if (item.status == true) {
+                            bgColor = "#F3863D";
+                            enable = "true";
+                        } else {
+                            bgColor = "";
+                            enable = "false";
+                        }
                         this.items.push({
                             dataset       : { id : item.id },
-                            userLastName  : { text : item.lastName },
-                            userFirstName : { text : item.firstName },
-                            userUsername  : { text : item.user }
+                            userStatus    : { dataset : { id : enable }},
+                            userLastName  : { text : item.lastName, style : { backgroundColor : bgColor }},
+                            userFirstName : { text : item.firstName, style : { backgroundColor : bgColor }},
+                            userUsername  : { text : item.user, style : { backgroundColor : bgColor }}
                         });
                     })
                 } else {
@@ -862,12 +886,22 @@ m2d2.ready($ => {
         },
         repopulate : function(data) {
             this.items.clear();
+            var bgColor = "";
+            var enable = "";
             data.forEach( item => {
+                if (item.status == true) {
+                    bgColor = "#F3863D";
+                    enable = "true";
+                } else {
+                    bgColor = "";
+                    enable = "false";
+                }
                 this.items.push({
-                    dataset : { id : item.id },
-                    userLastName : { text : item.lastName },
-                    userFirstName : { text : item.firstName },
-                    userUsername : { text : item.user }
+                    dataset         : { id : item.id },
+                    userStatus      : { dataset : { id : enable }},
+                    userLastName    : { text : item.lastName },
+                    userFirstName   : { text : item.firstName },
+                    userUsername    : { text : item.user }
                 });
             })
         }

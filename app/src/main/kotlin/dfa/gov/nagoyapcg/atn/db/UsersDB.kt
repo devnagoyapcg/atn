@@ -140,8 +140,8 @@ class UsersDB() {
                     "user",
                     "pass",
                     "lastName",
-                    "firstName",
-                    "status" -> cleanMap[inKey] = input[inKey]
+                    "firstName" -> cleanMap[inKey] = input[inKey]
+                    "status" -> cleanMap[inKey] = input[inKey] == 1
                     else -> {
                         Log.w("un-identified key $inKey")
                     }

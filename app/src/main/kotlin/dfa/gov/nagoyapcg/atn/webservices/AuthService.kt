@@ -80,6 +80,7 @@ class AuthService : ServiciableAuth {
     override fun onLogout(request: Request?, response: Response?): Boolean {
         var ok = false
         if (request!!.session() != null) {
+            if (request.session()?.attribute<Any>("ip").toString() == request.ip())
             request.session().invalidate()
             ok = true
         } else {

@@ -96,4 +96,11 @@ m2d2.ready($ => {
         $.session.set("id", 0);
         $.session.set("userid", 0);
     };
+    window.addEventListener('beforeunload', function (e) {
+        e.preventDefault();
+        var confirmationMessage = "\\o/";
+
+        (e || window.event).returnValue = confirmationMessage;
+        return confirmationMessage;
+    });
 });

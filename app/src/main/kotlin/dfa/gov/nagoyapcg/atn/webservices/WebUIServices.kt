@@ -189,6 +189,9 @@ class WebUIServices : ServiciableMultiple {
                 fun doCall(): LinkedHashMap<String, Any> {
                     val map = LinkedHashMap<String, Any>(1)
                     map["data"] = UsersDB.getAll()
+                    UsersDB.getAll().forEach {
+                        Log.i("USERS STATUS IS ${it.status}")
+                    }
                     return map
                 }
             }
