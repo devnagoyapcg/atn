@@ -47,14 +47,17 @@ m2d2.ready($ => {
                         button_save.value = "save";
                         this.text = "Close "
                         this.clear();
+                        search.disabled = false;
                     }
                 });
             } else {
                 box.classList.toggle("show-bottom");
                 if (box.classList.contains("show-bottom")) {
                     this.text = "Close ";
+                    search.disabled = true;
                 } else {
                     this.text = "Add new case "
+                    search.disabled = false;
                 }
                 this.clear();
             }

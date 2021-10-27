@@ -8,6 +8,7 @@ m2d2.ready($ => {
                 statistics.style.backgroundColor = "inherit";
                 settings.style.backgroundColor = "inherit";*/
             }
+            search.focus();
             cases_tab.style.display = "block";
             statistics_tab.style.display = "none";
             settings_tab.style.display = "none";
@@ -35,13 +36,6 @@ m2d2.ready($ => {
             search.show = false;
             add_new_record.show = false;
 
-            var from = date_start.value;
-            var to = date_end.value;
-            var data = {
-                start : from,
-                end : to,
-                officer : officers.value
-            };
             $.get(urlAtn + "officers", (res) => {
                 officers.items.clear();
                 officers.items.push({ text : "All" });
@@ -51,6 +45,13 @@ m2d2.ready($ => {
                     })
                 })
             });
+            var from = date_start.value;
+            var to = date_end.value;
+            var data = {
+                start : from,
+                end : to,
+                officer : officers.value
+            };
             $.post(urlAtn + "generate", data, (res) => {
                 google.charts.load('current', {'packages':['corechart']});
                 google.charts.setOnLoadCallback(statistics_data.drawChart(res.data));
@@ -59,6 +60,33 @@ m2d2.ready($ => {
     });
     $(settings, {
         onclick : function(ev) {
+            $.get(urlAtn + "users", (res) => {
+                if (res.data.length > 0) {
+                    list_of_users.items.clear();
+                    var bgColor = "";
+                    var enable = "";
+                    res.data.forEach( item => {
+                        if (item.status == true) {
+                            bgColor = "#F3863D";
+                            enable = "true";
+                        } else {
+                            bgColor = "";
+                            enable = "false";
+                        }
+                        list_of_users.items.push({
+                            dataset       : { id : item.id },
+                            userStatus    : { dataset : { id : enable }},
+                            userLastName  : { text : item.lastName, style : { backgroundColor : bgColor }},
+                            userFirstName : { text : item.firstName, style : { backgroundColor : bgColor }},
+                            userUsername  : { text : item.user, style : { backgroundColor : bgColor }}
+                        });
+                    })
+                } else {
+                    console.log("User's table is empty.");
+                }
+            }, () => {
+                console.log("Server error!");
+            });
             if (this.className != "active") {
                 this.className += "active";
                 /*this.style.backgroundColor = "#1D1F21";
@@ -155,6 +183,8 @@ m2d2.ready($ => {
             };
 
             // Display the chart inside the <div> element with id="piechart"
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(data);
             var chart = new google.visualization.PieChart(this);
             chart.draw(google.visualization.arrayToDataTable(arr), options);
         }
@@ -860,7 +890,7 @@ m2d2.ready($ => {
             }
         },
         onload : function() {
-            $.get(urlAtn + "users", (res) => {
+            /*$.get(urlAtn + "users", (res) => {
                 if (res.data.length > 0) {
                     this.items.clear();
                     var bgColor = "";
@@ -886,7 +916,7 @@ m2d2.ready($ => {
                 }
             }, () => {
                 console.log("Server error!");
-            });
+            });*/
         },
         repopulate : function(data) {
             this.items.clear();

@@ -67,6 +67,17 @@ m2d2.ready($ => {
                 $.session.clear();
                 window.location.href = "/";
             }
+            var from = date_start.value;
+            var to = date_end.value;
+            var data = {
+                start : from,
+                end : to,
+                officer : officers.value
+            };
+            $.post(urlAtn + "generate", data, (res) => {
+                statistics_data.drawChart(res.data);
+            }, true);
+            search.focus();
         },
         onresize : function() {
             var from = date_start.value;
@@ -77,8 +88,7 @@ m2d2.ready($ => {
                 officer : officers.value
             };
             $.post(urlAtn + "generate", data, (res) => {
-                google.charts.load('current', {'packages':['corechart']});
-                google.charts.setOnLoadCallback(statistics_data.drawChart(res.data));
+                statistics_data.drawChart(res.data);
             }, true);
         }
     });

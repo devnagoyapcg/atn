@@ -94,7 +94,7 @@
         padding: 0;
         display : grid;
         grid-gap: 0;
-        grid-template-columns: 20px 20px 300px 300px 70%;
+        grid-template-columns: 70px 60px 300px 300px 70%;
         grid-template-areas: "logout icon user_last_name user_first_name user_username";
         grid-template-row: auto;
         li {
@@ -134,8 +134,9 @@
         li {
             display: grid;
             grid-gap: 0;
-            grid-template-columns: 20px 20px 300px 300px 70%;
+            grid-template-columns: 70px 60px 300px 300px 70%;
             grid-template-areas: "logout icon user_last_name user_first_name user_username";
+            align-items: center;
             &:hover {
                 background-color: #8fbc8f;
                 cursor: default;
@@ -146,6 +147,9 @@
                 border-right: 1px solid $white;
                 color: $white;
                 text-align: center;
+                i {
+                    font-size: 18px;
+                }
                 &:hover {
                     cursor: pointer;
                     background-color: $white;
@@ -157,6 +161,10 @@
                 border-bottom: 1px solid $white;
                 color: $white;
                 text-align: center;
+                font-size: 18px;
+                i {
+                    font-size: 18px;
+                }
                 &:hover {
                     cursor: pointer;
                     background-color: $red;
