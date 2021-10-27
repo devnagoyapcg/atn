@@ -797,7 +797,10 @@ m2d2.ready($ => {
                         if (this.dataset.id == "true") {
                             $.confirm("Are you sure you want to sign-out this user?", (res) => {
                                 if (res) {
-                                   $.get(url + "logout", (res) => {});
+                                    var data = {
+                                        user : username.value
+                                    };
+                                    $.post(urlAtn + "logout", data, (res) => {}, true);
                                 }
                             });
                         }
@@ -839,6 +842,7 @@ m2d2.ready($ => {
                 },
                 onclick : function(ev) {
                     $.session.set("userid", this.dataset.id);
+                    $.session.set("username", this.userUsername.text);
                     user_lastname.value     = this.userLastName.text;
                     user_firstname.value    = this.userFirstName.text;
                     username.value          = this.userUsername.text;

@@ -94,8 +94,8 @@
         padding: 0;
         display : grid;
         grid-gap: 0;
-        grid-template-columns: 20px 300px 300px 70%;
-        grid-template-areas: "icon user_last_name user_first_name user_username";
+        grid-template-columns: 20px 20px 300px 300px 70%;
+        grid-template-areas: "logout icon user_last_name user_first_name user_username";
         grid-template-row: auto;
         li {
             font-size: 18px;
@@ -108,6 +108,9 @@
             vertical-align: middle;
             text-align: center;
             background-color: $purple;
+            #user_status {
+                grid-area: logout;
+            }
             #user_icons {
                 grid-area: icon;
             }
@@ -125,30 +128,43 @@
     #list_of_users {
         margin: 0;
         padding: 0;
+        list-style: none;
+        white-space: normal;
+        list-style-position: inside;
         li {
             display: grid;
             grid-gap: 0;
-            grid-template-columns: 20px 300px 300px 70%;
-            grid-template-areas: "icon user_last_name user_first_name user_username";
+            grid-template-columns: 20px 20px 300px 300px 70%;
+            grid-template-areas: "logout icon user_last_name user_first_name user_username";
             &:hover {
                 background-color: #8fbc8f;
                 cursor: default;
             }
-            i {
+            .userStatus {
+                grid-area: logout;
+                border-bottom: 1px solid $white;
+                border-right: 1px solid $white;
+                color: $white;
+                text-align: center;
+                &:hover {
+                    cursor: pointer;
+                    background-color: $white;
+                    color: $background;
+                }
+            }
+            .userDelete {
                 grid-area: icon;
                 border-bottom: 1px solid $white;
                 color: $white;
                 text-align: center;
                 &:hover {
                     cursor: pointer;
+                    background-color: $red;
                 }
             }
             span {
                 font-size: 18px;
                 color: $white;
-                list-style: none;
-                white-space: normal;
-                list-style-position: inside;
                 border: 1px solid $white;
                 border-top: 0;
                 vertical-align: middle;
@@ -163,6 +179,7 @@
                     grid-area: user_username;
                 }
                 &:hover {
+                    background-color: #8fbc8f;
                     cursor: default;
                 }
             }

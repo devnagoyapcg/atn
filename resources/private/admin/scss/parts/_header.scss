@@ -22,4 +22,32 @@
             cursor: pointer;
         }
     }
+    /*#tabs {
+        grid-area: tab;
+        margin: 0;
+        padding: 0;
+        background-color: $bright;
+        overflow: hidden;
+        border: 1px solid $white;
+        display: flex;
+        button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 4px 4px;
+            transition: 0.3s;
+            font-size: 1.5em;
+            color: $white;
+            flex-grow: 1;
+            &:hover {
+                background-color: $green;
+            }
+            &.active {
+                background-color: $dark;
+                color: $red;
+            }
+        }
+    }*/
 }

@@ -7,9 +7,10 @@ import com.intellisrc.db.Database
 import com.intellisrc.web.JSON
 import com.intellisrc.web.Service.Allow
 import com.intellisrc.web.ServiciableAuth
-import dfa.gov.nagoyapcg.atn.db.models.UserModel
+import dfa.gov.nagoyapcg.atn.db.models.LoginStatusModel
 import spark.Request
 import spark.Response
+import java.util.concurrent.ConcurrentHashMap
 
 class AuthService : ServiciableAuth {
     enum class Level {
@@ -43,6 +44,9 @@ class AuthService : ServiciableAuth {
             val hash = db.table(authTable).field("pass").key("user")[user].toString()
             if (db.table(authTable).field("status").key("user")[user].toString() == "1") {
                 Log.i("user $user already logged in")
+                //db.table("auth").key("user").update(mapOf("status" to 0), "sem")
+                //db.table("auth").key("user").update(mapOf("status" to 0), "admin")
+                //db.table("auth").key("user").update(mapOf("status" to 0), "superadministrator")
                 response?.status(409)
                 return map
             } else {
@@ -60,6 +64,7 @@ class AuthService : ServiciableAuth {
                         map["user"] = user
                         map["level"] = level
                         map["ip"] = request?.ip()!!
+                        mapLogin[user] = LoginStatusModel(request.ip(), user, level, request.session())
                         Log.i("[%s] logged in as %s", request.ip(), user)
                     } else {
                         Log.w("[%s] Provided password is incorrect. Hash: [%s]", request?.ip(), ph.BCryptNoHeader())
@@ -79,9 +84,9 @@ class AuthService : ServiciableAuth {
 
     override fun onLogout(request: Request?, response: Response?): Boolean {
         var ok = false
+        val user = request?.session()?.attribute<Any>("user")?.toString()
         if (request!!.session() != null) {
-            if (request.session()?.attribute<Any>("ip").toString() == request.ip())
-            request.session().invalidate()
+            mapLogin.remove(user)
             ok = true
         } else {
             Log.w("[%s] Session was empty", request.ip())
@@ -92,6 +97,7 @@ class AuthService : ServiciableAuth {
 
     companion object {
         const val authTable = "auth"
+        val mapLogin: ConcurrentHashMap<String, Any> = ConcurrentHashMap()
 
         fun getUserLevel(request: Request?): Level {
             return if (request?.session()?.attribute<Level?>("level")?.toString()?.uppercase() == "SUPER") {

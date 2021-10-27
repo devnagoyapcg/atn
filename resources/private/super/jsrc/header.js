@@ -5,12 +5,15 @@ m2d2.ready($ => {
                 if (res) {
                     $.get(url + "logout", (res) => {
                         if (res) {
-                            $.get(url + "logout", (res) => {
+                            var data = {
+                                user : $.session.get("user")
+                            };
+                            $.post(urlAtn + "logout", data, (res) => {
                                 if (res) {
                                     $.session.clear();
-                                    window.location.href = "/";
+                                    window.location.href = res.page;
                                 }
-                            });
+                            }, true);
                         } else {
                             $.failure("Error logging out");
                         }

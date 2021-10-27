@@ -83,6 +83,7 @@ class WebUIServices : ServiciableMultiple {
                     val user = gson.fromJson(request.body().trim(), HashMap::class.java)
                     val db: DB = Database.getDefault().connect()
                     db.table(AuthService.authTable).key("user").update(mapOf("status" to 0), user["user"].toString())
+                    AuthService.mapLogin.remove(user["user"].toString())
                     db.close()
                     val page = "/"
                     map["page"] = page

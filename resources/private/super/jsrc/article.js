@@ -22,8 +22,25 @@ m2d2.ready($ => {
         template : {
             li : {
                 dataset : { id : "" },
-                i : {
-                    className : "fa fa-trash-o",
+                userStatus : {
+                    tagName : "i",
+                    className : "fa fa-sign-out userStatus",
+                    onclick : function(ev) {
+                        if (this.dataset.id == "true") {
+                            $.confirm("Are you sure you want to sign-out this user?", (res) => {
+                                if (res) {
+                                    var data = {
+                                        user : username.value
+                                    };
+                                    $.post(urlAtn + "logout", data, (res) => {}, true);
+                                }
+                            });
+                        }
+                    }
+                },
+                userDelete : {
+                    tagName : "i",
+                    className : "fa fa-trash-o userDelete",
                     onclick : function(ev) {
                         $.confirm("Are you sure you want to delete " + " user?", (res) => {
                             if (res) {

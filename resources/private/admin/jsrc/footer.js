@@ -45,11 +45,17 @@ m2d2.ready($ => {
                     if (res) {
                         case_title.text = "Add new case";
                         button_save.value = "save";
+                        this.text = "Close "
                         this.clear();
                     }
                 });
             } else {
                 box.classList.toggle("show-bottom");
+                if (box.classList.contains("show-bottom")) {
+                    this.text = "Close ";
+                } else {
+                    this.text = "Add new case "
+                }
                 this.clear();
             }
         },
