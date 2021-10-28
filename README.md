@@ -2,7 +2,7 @@
 
 ****
 
-THIS SYSTEM IS FOR "ENCODING / MONITORING / AND MANAGING" THE RECORDS OR CASES OF FILIPINO NATIONALS OVERSEAS. THIS SYSTEM HAS THE ABILITY TO GENERATE RECORDS ON MANY FORMS FOR GENERATING REPORTS.
+THIS IS A ***WEB BASED SYSTEM*** FOR "ENCODING / MONITORING / AND MANAGING" THE RECORDS OR CASES OF FILIPINO NATIONALS OVERSEAS. THIS SYSTEM HAS THE ABILITY TO GENERATE RECORDS ON MANY FORMS FOR GENERATING REPORTS.
 
 **PREREQUISITES:**
 
@@ -16,9 +16,9 @@ THIS SYSTEM IS FOR "ENCODING / MONITORING / AND MANAGING" THE RECORDS OR CASES O
 
     TECHNOLOGY USED
 
-        IntelliJ Idea
-        Gradle - for compiling the Jar file.
-        Chrome, Firefox, and Safari
+        1. IntelliJ Idea
+        2. Gradle - for compiling the Jar file.
+        3. Chrome, Firefox, and Safari - for the UI
 
 
 **INSTRUCTIONS**
@@ -41,4 +41,4 @@ THIS SYSTEM IS FOR "ENCODING / MONITORING / AND MANAGING" THE RECORDS OR CASES O
 | :-----------: | :------: |
 | Sem Moreno (josapedmoreno@gmail.com) | 2021 |
 
-Property of the Philippine Consulate General in Nagoya
+Property of the [Philippine Consulate General in Nagoya](https://nagoyapcg.dfa.gov.ph/)
