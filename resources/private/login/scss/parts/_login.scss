@@ -10,6 +10,12 @@
     article {
         display: grid;
         place-items: center;
+        #logo_container {
+            margin-top: -50px;
+            #pcg_logo {
+                margin-right: 24px;
+            }
+        }
         #form_login {
             box-shadow: 0 0 10px 5px rgba(255, 255, 255, 1.0);
             border-radius: 10px;
@@ -17,6 +23,7 @@
             padding-right: 16px;
             padding-top: 16px;
             padding-bottom: 16px;
+            margin-top: -250px;
             width: 400px;
             #username {
                 width: 100%;

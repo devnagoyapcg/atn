@@ -40,9 +40,11 @@ m2d2.ready($ => {
                 officers.items.clear();
                 officers.items.push({ text : "All" });
                 res.data.forEach(item => {
-                    officers.items.push({
-                        text : item
-                    })
+                    if (!item.includes("administrator")) {
+                        officers.items.push({
+                            text : item
+                        });
+                    }
                 })
             });
             var from = date_start.value;
@@ -247,9 +249,11 @@ m2d2.ready($ => {
             $.get(urlAtn + "officers", (res) => {
                 this.items.clear();
                 res.data.forEach(item => {
-                    this.items.push({
-                        text : item
-                    })
+                    if (!item.includes("super")) {
+                        this.items.push({
+                            text : item
+                        });
+                    }
                 })
             });
         }

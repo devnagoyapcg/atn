@@ -136,7 +136,7 @@
             grid-gap: 0;
             grid-template-columns: 70px 60px 300px 300px 70%;
             grid-template-areas: "logout icon user_last_name user_first_name user_username";
-            align-items: center;
+            font-size: 18px;
             &:hover {
                 background-color: #8fbc8f;
                 cursor: default;
@@ -147,9 +147,7 @@
                 border-right: 1px solid $white;
                 color: $white;
                 text-align: center;
-                i {
-                    font-size: 18px;
-                }
+                padding-top: 4px;
                 &:hover {
                     cursor: pointer;
                     background-color: $white;
@@ -161,17 +159,14 @@
                 border-bottom: 1px solid $white;
                 color: $white;
                 text-align: center;
+                padding-top: 4px;
                 font-size: 18px;
-                i {
-                    font-size: 18px;
-                }
                 &:hover {
                     cursor: pointer;
                     background-color: $red;
                 }
             }
             span {
-                font-size: 18px;
                 color: $white;
                 border: 1px solid $white;
                 border-top: 0;

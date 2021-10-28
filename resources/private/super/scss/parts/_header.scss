@@ -4,11 +4,18 @@
     background-color: $highlight;
     height: auto;
     border-bottom: 1px solid $white;
+    #atn_logo {
+        float: left;
+        margin-top: 4px;
+        margin-left: 4px;
+    }
     #user {
         display:inline-block;
         vertical-align: middle;
         float: left;
         margin-left: 4px;
+        margin-top: 8px;
+        color: $white;
     }
     #logout {
         display:inline-block;
