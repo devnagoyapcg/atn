@@ -47,7 +47,7 @@ m2d2.ready($ => {
                         button_save.value = "save";
                         this.text = "Close "
                         this.clear();
-                        search.disabled = false;
+                        search.disabled = true;
                     }
                 });
             } else {

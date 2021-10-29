@@ -597,6 +597,8 @@ m2d2.ready($ => {
                     case_officers.value         = this.officer.text;
                     case_others.value           = this.others.text;
                     case_list.onDisable();
+                    search.disabled             = true;
+                    add_new_record.text         = "Close ";
                 }
             }
         },

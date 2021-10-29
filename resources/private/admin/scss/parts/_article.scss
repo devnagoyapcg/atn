@@ -78,7 +78,7 @@
                 width: 100%;
                 display: block;
                 text-align: center;
-                h3 {
+                #case_title {
                     display: inline;
                     text-align: center;
                     color: $white;
@@ -99,14 +99,75 @@
                     .fa-times {
                         color: white;
                         vertical-align: text-top;
+                        &:hover {
+                            cursor: pointer;
+                        }
                     }
                 }
             }
             #fields_container {
                 grid-area: fields;
-                white-space: nowrap;
+                //white-space: nowrap;
                 overflow-y: auto;
-                -webkit-overflow-scrolling: touch;
+                //overflow-anchor: none;
+                //-webkit-overflow-scrolling: touch;
+                #add_fields {
+                    display: flex;
+                    justify-content: normal;
+                    flex-wrap: wrap;
+                    li {
+                        list-style: none;
+                        vertical-align: middle;
+                        display: block;
+                        width: 100%;
+                        span {
+                            width: 24%;
+                            border: none;
+                            font-size: 2em;
+                            display: inline-block;
+                            vertical-align: middle;
+                            text-align: left;
+                            margin-left: 8px;
+                            color: $white;
+                        }
+                        input, textarea, select {
+                            font-size: 2em;
+                            width: 65%;
+                            vertical-align: middle;
+                            margin: 4px;
+                        }
+                    }
+                }
+                #buttons_container {
+                    display: flex;
+                    button {
+                        font-size: 2em;
+                        border-radius: 10px;
+                        flex-grow: 1;
+                        &:hover {
+                            background-image: linear-gradient($green, $green);
+                            cursor: pointer;
+                        }
+                    }
+                    #button_cancel {
+                        background-image: linear-gradient($red, $yellow);
+                    }
+                    #button_upload {
+                        background-image: linear-gradient($blue, $search_border);
+                    }
+                    #button_delete {
+                        background-image: linear-gradient($blue, $search_border);
+                    }
+                    #button_edit {
+                        background-image: linear-gradient($blue, $search_border);
+                    }
+                    #button_print {
+                        background-image: linear-gradient($blue, $search_border);
+                    }
+                    #button_save {
+                        background-image: linear-gradient($blue, $search_border);
+                    }
+                }
             }
         }
         .box.show-front  { transform: translateZ( -50px) rotateY(   0deg); }
@@ -247,63 +308,6 @@
                         grid-area: officer;
                     }
                 }
-            }
-        }
-        #add_fields {
-            display: flex;
-            justify-content: normal;
-            flex-wrap: wrap;
-            li {
-                list-style: none;
-                vertical-align: middle;
-                display: block;
-                width: 100%;
-                span {
-                    width: 24%;
-                    border: none;
-                    font-size: 2em;
-                    display: inline-block;
-                    vertical-align: middle;
-                    text-align: left;
-                    margin-left: 8px;
-                    color: $white;
-                }
-                input, textarea, select {
-                    font-size: 2em;
-                    width: 65%;
-                    vertical-align: middle;
-                    margin: 4px;
-                }
-            }
-        }
-        #buttons_container {
-            display: flex;
-            button {
-                font-size: 2em;
-                border-radius: 10px;
-                flex-grow: 1;
-                &:hover {
-                    background-image: linear-gradient($green, $green);
-                    cursor: pointer;
-                }
-            }
-            #button_cancel {
-                background-image: linear-gradient($red, $yellow);
-            }
-            #button_upload {
-                background-image: linear-gradient($blue, $search_border);
-            }
-            #button_delete {
-                background-image: linear-gradient($blue, $search_border);
-            }
-            #button_edit {
-                background-image: linear-gradient($blue, $search_border);
-            }
-            #button_print {
-                background-image: linear-gradient($blue, $search_border);
-            }
-            #button_save {
-                background-image: linear-gradient($blue, $search_border);
             }
         }
     }
