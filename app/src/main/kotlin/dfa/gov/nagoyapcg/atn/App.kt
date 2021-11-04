@@ -5,12 +5,16 @@ import com.intellisrc.core.Log
 import com.intellisrc.core.SysInfo
 import com.intellisrc.core.SysService
 import com.intellisrc.db.Database
+import com.intellisrc.thread.ServiceTask
 import com.intellisrc.web.WebService
 import dfa.gov.nagoyapcg.atn.db.AtnDB
-import dfa.gov.nagoyapcg.atn.db.SuperAuthService
-import dfa.gov.nagoyapcg.atn.webservices.AuthService
+import dfa.gov.nagoyapcg.atn.db.UsersDB
 import dfa.gov.nagoyapcg.atn.socket.SystemWebSocket
+import dfa.gov.nagoyapcg.atn.webservices.AuthService
 import dfa.gov.nagoyapcg.atn.webservices.WebUIServices
+import java.time.LocalDateTime
+import java.util.*
+
 
 class App : SysService() {
 
@@ -35,6 +39,7 @@ class App : SysService() {
         web.start(keepAlive)
         if (web.isRunning)
             Log.i("Web service is running!")
+        executeOnEveryMidnight()
     }
 
     override fun onStop() {
@@ -47,6 +52,29 @@ class App : SysService() {
         private val webService = WebService()
         init {
             service = App()
+        }
+        private fun executeOnEveryMidnight() {
+            ServiceTask.create({
+                val timer = Timer()
+                val hourlyTask: TimerTask = object : TimerTask() {
+                    override fun run() {
+                        val now = LocalDateTime.now()
+                        if (now.hour <= 0 && now.minute <= 0 && now.second <= 0) {
+                            logoutEveryone()
+                        }
+                    }
+                }
+                // schedule the task to run starting now and then every hour...
+                timer.schedule(hourlyTask, 0L, 1000 * 60 * 60)
+            }, "logout")
+        }
+        private fun logoutEveryone() {
+            Log.i("Executed all user logout policy on midnight time.")
+            val db = Database.getDefault().connect()
+            UsersDB.superGetAll().forEach {
+                db.table(AuthService.authTable).key("user").update(mapOf("status" to 0), it.user)
+            }
+            db.close()
         }
     }
 }

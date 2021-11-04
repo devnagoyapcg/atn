@@ -24,6 +24,17 @@ class UsersDB() {
             db.close()
             return fromData(rows!!)
         }
+        fun superGetAll(): List<UserModel> {
+            Log.i("Super get all users")
+            val db = Database.getDefault().connect()
+            var rows: Data? = null
+            if (db.table(table).exists())
+                rows = db.table(table).get()
+            else
+                Log.w("Table $table doesn't exist!")
+            db.close()
+            return fromData(rows!!)
+        }
         fun create(user: Map<String, Any>): Boolean {
             Log.i("Creating new user")
             var ok = false

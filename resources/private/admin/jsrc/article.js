@@ -501,6 +501,10 @@ m2d2.ready($ => {
             box.classList.remove("show-front");
             box.classList.toggle("show-bottom");
             case_list.onEnable();
+            add_new_record.text = "Add new case ";
+            add_new_record.style.backgroundColor = "";
+            search.disabled = false;
+            search.focus();
         },
         onkeyup : function(ev) {
             if (ev.key === "Escape" || ev.which === 27) {
@@ -599,6 +603,7 @@ m2d2.ready($ => {
                     case_list.onDisable();
                     search.disabled             = true;
                     add_new_record.text         = "Close ";
+                    add_new_record.style.backgroundColor = "red";
                 }
             }
         },

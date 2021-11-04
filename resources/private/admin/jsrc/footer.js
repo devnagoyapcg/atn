@@ -54,9 +54,11 @@ m2d2.ready($ => {
                 box.classList.toggle("show-bottom");
                 if (box.classList.contains("show-bottom")) {
                     this.text = "Close ";
+                    this.style.backgroundColor = "red";
                     search.disabled = true;
                 } else {
                     this.text = "Add new case "
+                    this.style.backgroundColor = "";
                     search.disabled = false;
                 }
                 this.clear();
