@@ -55,8 +55,7 @@ m2d2.ready($ => {
                 officer : officers.value
             };
             $.post(urlAtn + "generate", data, (res) => {
-                google.charts.load('current', {'packages':['corechart']});
-                google.charts.setOnLoadCallback(statistics_data.drawChart(res.data));
+                statistics_data.drawChart(res.data)
             }, true);
         }
     });
@@ -185,7 +184,6 @@ m2d2.ready($ => {
             };
 
             // Display the chart inside the <div> element with id="piechart"
-            google.charts.load('current', {'packages':['corechart']});
             google.charts.setOnLoadCallback(data);
             var chart = new google.visualization.PieChart(this);
             chart.draw(google.visualization.arrayToDataTable(arr), options);

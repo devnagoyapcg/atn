@@ -28,6 +28,7 @@ const randomColor = () => {
 };
 
 m2d2.ready($ => {
+    google.charts.load('current', {packages: ['corechart']});
     $.dict.set({
         yes : {
             en : "YES"
