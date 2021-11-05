@@ -20,7 +20,9 @@
     "pdfmake": "^0.2.2",
     "gulp-nw-builder": "^1.4.0",
     "nw": "^0.54.0",
-    "echarts": "^5.2.0"
+    "echarts": "^5.2.0",
+    "tippy.js": "6.3.4",
+    "@popperjs/core": "2.10.2"
   },
   "main": "gulpfile.js",
   "devDependencies": {
