@@ -178,7 +178,6 @@ class AtnDB {
             val dbFile = SysInfo.getFile(Config.get("db.name", "main") + ".db")
             if (!dbFile.exists()) {
                 val db: DB = Database.getDefault().connect()
-                db.exec(Query(""))
                 val file: File = SysInfo.getFile("resources/create.sql")
                 if (file.exists()) {
                     try {

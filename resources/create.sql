@@ -23,7 +23,6 @@ CREATE TABLE `auth` (
 `lastName` VARCHAR(100) NOT NULL,
 `firstName` VARCHAR(100) NOT NULL,
 `status` BOOLEAN,
-`timeStamp` TEXT
-);
-INSERT INTO `auth` (`user`,`pass`,`lastName`,`firstName`,`false`,) VALUES ("superadministrator", "$2y$10$KknMW1evaxfhYBLAWk7oK.HHQ664ZhGlMwF1MeUA3ogpxhq1ddroO", "Super", "Administrator");
-INSERT INTO `auth` (`user`,`pass`,`lastName`,`firstName`,`false`,) VALUES ("admin", "UCDMOzHjLRTMaCbBSkvfLOzF/5CWhDivPGUWYGucl57tXlgCH/atu", "Admin", "Admin");
+`timeStamp` TEXT);
+INSERT INTO `auth` (`user`,`pass`,`lastName`,`firstName`,`status`,`timeStamp`) VALUES ("superadministrator", "$2y$10$KknMW1evaxfhYBLAWk7oK.HHQ664ZhGlMwF1MeUA3ogpxhq1ddroO", "Super", "Administrator", false, "");
+INSERT INTO `auth` (`user`,`pass`,`lastName`,`firstName`,`status`,`timeStamp`) VALUES ("admin", "UCDMOzHjLRTMaCbBSkvfLOzF/5CWhDivPGUWYGucl57tXlgCH/atu", "Admin", "Admin", false, "");

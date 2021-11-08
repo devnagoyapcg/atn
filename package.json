@@ -19,21 +19,21 @@
     "expressjs": "^1.0.1",
     "pdfmake": "^0.2.2",
     "gulp-nw-builder": "^1.4.0",
-    "nw": "^0.54.0",
     "echarts": "^5.2.0",
     "tippy.js": "6.3.4",
     "@popperjs/core": "2.10.2"
   },
   "main": "gulpfile.js",
   "devDependencies": {
-    "gulp": "^4.0.2",
-    "gulp-concat": "^2.6.1",
-    "gulp-cssmin": "^0.2.0",
-    "gulp-rename": "^2.0.0",
-    "gulp-sass": "^5.0.0",
-    "gulp-sass-glob": "^1.1.0",
-    "gulp-terser": "^1.4.1",
-    "gulpfile.js": "^3.2.5"
+    "gulp": "4.0.2",
+    "gulp-concat": "2.6.1",
+    "gulp-cssmin": "0.2.0",
+    "gulp-rename": "2.0.0",
+    "gulp-sass": "5.0.0",
+    "gulp-sass-glob": "1.1.0",
+    "gulp-terser": "1.4.1",
+    "gulpfile.js": "3.2.5",
+    "echarts": "5.2.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
