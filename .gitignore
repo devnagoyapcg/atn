@@ -7,3 +7,4 @@ lib/
 deploy/
 log/
 service.lock
+package-lock.json
