@@ -55,7 +55,7 @@ class SuperAuthService : ServiciableAuth {
             } else
                 Log.w("[%s] user %s not found.", request?.ip(), user)
         } else
-            Log.w("[%s] password was emtpy.", request?.ip(), user)
+            Log.w("[%s] password was empty.", request?.ip(), user)
         return map
     }
 

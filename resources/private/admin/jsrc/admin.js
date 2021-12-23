@@ -5,11 +5,9 @@ const _ = (k) => k;
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
-
 function capitalizeWords(string) {
     return string.replace(/(?:^|\s|-)\S/g, function(a) { return a.toUpperCase(); });
-};
-
+}
 function getNewDate(newDateTime) {
     var date = new Date(), y = date.getFullYear(), m = date.getMonth();
     var firstDay = new Date(y, m, 1);
@@ -22,10 +20,9 @@ function getDate(newDateTime) {
 function getTime(newDateTime) {
     return getNewDate(newDateTime).toLocaleTimeString("ja-JP", { timezone : "Tokyo/Asia" });
 }
-
 const randomColor = () => {
     return "#" + Math.random().toString(16).slice(2, 8);
-};
+}
 
 m2d2.ready($ => {
     google.charts.load('current', {packages: ['corechart']});

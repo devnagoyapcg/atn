@@ -38,7 +38,7 @@ class UsersDB() {
         fun create(user: Map<String, Any>): Boolean {
             Log.i("Creating new user")
             var ok = false
-            var db: DB = Database.getDefault().connect()
+            val db: DB = Database.getDefault().connect()
             if (db.table(table).exists())
                 ok = db.table(table).insert(user)
             else

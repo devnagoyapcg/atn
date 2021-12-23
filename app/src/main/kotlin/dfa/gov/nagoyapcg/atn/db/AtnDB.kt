@@ -90,7 +90,7 @@ class AtnDB {
             var ok = false
             val db: DB = Database.getDefault().connect()
             if (db.table(table).exists()) {
-                ok = db.table(table).key("id").delete(id)
+                ok = db.table(table).key("uid").delete(id)
             } else
                 Log.w("Table $table doesn't exist!")
             db.close()
@@ -100,10 +100,10 @@ class AtnDB {
             val db: DB = Database.getDefault().connect()
             var rows: Data? = null
             if (db.table(table).exists()) {
-                if (officer == "All")
-                    rows = db.table(table).where("dateRecorded BETWEEN ? AND ?", from, to).get()
+                rows = if (officer == "All")
+                    db.table(table).where("dateRecorded BETWEEN ? AND ?", from, to).get()
                 else
-                    rows = db.table(table).where("dateRecorded BETWEEN ? AND ?", from, to).key("officer").get(officer)
+                    db.table(table).where("dateRecorded BETWEEN ? AND ?", from, to).key("officer").get(officer)
             } else
                 Log.w("Table $table doesn't exist!")
             db.close()
