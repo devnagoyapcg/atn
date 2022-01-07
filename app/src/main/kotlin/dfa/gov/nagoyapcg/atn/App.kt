@@ -24,7 +24,7 @@ class App : SysService() {
         var port = Config.getInt("web.port")
         if (!args.isEmpty())
             port = Integer.parseInt(args.poll())
-        webService.port = port
+        webService.port = 8080
         webService.setResources(SysInfo.getFile("resources", "public"))
         webService.add(AuthService())
         webService.add(WebUIServices())
